@@ -64,3 +64,15 @@ Remoto configurado:
 ```txt
 git@github.com:joropeza88/frogPuzzle.git
 ```
+
+
+## Creditos
+
+Musica de fondo:
+charlvera-whispering-meadows-calm-ambient-music-for-projects-332800
+
+Autor:
+Charlvera
+
+Perfil:
+https://pixabay.com/users/charlvera-11040068/

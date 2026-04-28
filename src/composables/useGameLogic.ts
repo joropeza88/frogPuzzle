@@ -23,7 +23,7 @@ export interface MoveAnimation {
 export function useGameLogic() {
   const levels = useLevels();
   const jumpAudio =
-    typeof Audio === 'undefined' ? null : new Audio('sounds/jump.wav');
+    typeof Audio === 'undefined' ? null : new Audio('sounds/jump.mp3');
   const currentLevel = ref(1);
   const board = ref<BoardCell[]>([]);
   const selectedIndex = ref<number | null>(null);
