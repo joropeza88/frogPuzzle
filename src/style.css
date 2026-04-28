@@ -3,6 +3,7 @@
 :root {
   color-scheme: light;
   font-family: "Avenir Next", "Trebuchet MS", sans-serif;
+  --app-height: 100dvh;
   background:
     radial-gradient(circle at top, rgba(45, 212, 191, 0.2), transparent 34%),
     linear-gradient(180deg, #f8fafc 0%, #ecfccb 48%, #d9f99d 100%);
@@ -16,6 +17,10 @@ body,
   margin: 0;
   padding: 0;
   overflow: hidden;
+}
+
+#app {
+  min-height: var(--app-height);
 }
 
 html,
@@ -117,4 +122,8 @@ button {
 .plants-front {
   animation: plants-front 6s ease-in-out infinite;
   transform-origin: center center;
+}
+
+.app-screen {
+  min-height: var(--app-height);
 }

@@ -1,5 +1,5 @@
 <template>
-  <main class="relative mx-auto flex min-h-dvh w-full max-w-md flex-col box-border bg-[radial-gradient(circle_at_top,_rgba(16,185,129,0.36),_transparent_30%),linear-gradient(180deg,_#06281f_0%,_#0f172a_58%,_#020617_100%)] px-4 pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] text-white">
+  <main class="app-screen relative mx-auto flex w-full max-w-md flex-col box-border bg-[radial-gradient(circle_at_top,_rgba(16,185,129,0.36),_transparent_30%),linear-gradient(180deg,_#06281f_0%,_#0f172a_58%,_#020617_100%)] px-4 pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] text-white">
     <section class="relative flex flex-1 flex-col justify-between overflow-hidden rounded-[2.5rem] border border-white/10 bg-white/8 p-6 shadow-[0_28px_80px_rgba(15,23,42,0.36)] backdrop-blur my-6">
       <div class="pointer-events-none absolute -top-10 right-0 h-32 w-32 rounded-full bg-emerald-400/20 blur-3xl"></div>
       <div class="pointer-events-none absolute bottom-12 left-0 h-28 w-28 rounded-full bg-cyan-300/12 blur-3xl"></div>
