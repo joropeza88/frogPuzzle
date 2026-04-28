@@ -1,5 +1,6 @@
 import { computed, ref } from 'vue';
 import { useLevels } from './useLevels';
+import { playSoundEffect, preloadSoundEffect } from './useSoundEffects';
 import { useTimer } from './useTimer';
 import {
   checkWinCondition,
@@ -22,8 +23,6 @@ export interface MoveAnimation {
 
 export function useGameLogic() {
   const levels = useLevels();
-  const jumpAudio =
-    typeof Audio === 'undefined' ? null : new Audio('sounds/jump.mp3');
   const currentLevel = ref(1);
   const board = ref<BoardCell[]>([]);
   const selectedIndex = ref<number | null>(null);
@@ -47,10 +46,7 @@ export function useGameLogic() {
     }
   });
 
-  if (jumpAudio) {
-    jumpAudio.preload = 'auto';
-    jumpAudio.volume = 0.45;
-  }
+  void preloadSoundEffect('/sounds/jump.mp3');
 
   function clearError() {
     if (errorTimeout !== null) {
@@ -80,12 +76,10 @@ export function useGameLogic() {
   }
 
   function playJumpSound() {
-    if (!jumpAudio) {
-      return;
-    }
-
-    jumpAudio.currentTime = 0;
-    void jumpAudio.play().catch(() => {
+    void playSoundEffect('/sounds/jump.mp3', {
+      volume: 0.45,
+      offset: 0.015
+    }).catch(() => {
       // Ignora bloqueos del navegador si el audio aún no puede reproducirse.
     });
   }

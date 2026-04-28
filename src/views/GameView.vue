@@ -1,5 +1,9 @@
 <template>
-  <main class="relative mx-auto flex w-full max-w-md flex-col px-4 pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] h-dvh overflow-hidden">
+  <main class="relative mx-auto flex w-full max-w-md flex-col px-4 h-dvh box-border overflow-hidden pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]">
+    
+    <div class="light-orb orb-a"></div>
+    <div class="light-orb orb-b"></div>
+    
     <div class="pointer-events-none absolute inset-0 z-0 overflow-hidden">
       <div
         :key="waveBurstKey"

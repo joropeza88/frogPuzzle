@@ -82,6 +82,7 @@
 
 <script setup lang="ts">
 import { computed, nextTick, ref, watch } from 'vue';
+import { playSoundEffect, preloadSoundEffect } from '../composables/useSoundEffects';
 import FrogPiece from './FrogPiece.vue';
 import type { BoardCell } from '../utils/movementRules';
 import type { MoveAnimation } from '../composables/useGameLogic';
@@ -135,8 +136,6 @@ const cellRefs = ref<(HTMLButtonElement | null)[]>([]);
 const jumpSprite = ref<JumpSprite | null>(null);
 const landingEffect = ref<LandingEffect | null>(null);
 const originEffect = ref<OriginEffect | null>(null);
-const splashAudio =
-  typeof Audio === 'undefined' ? null : new Audio('sounds/splash.mp3');
 let jumpCleanupTimeout: number | null = null;
 let landingEffectTimeout: number | null = null;
 let landingKickoffTimeout: number | null = null;
@@ -254,10 +253,7 @@ const jumpStyle = computed(() => {
   };
 });
 
-if (splashAudio) {
-  splashAudio.preload = 'auto';
-  splashAudio.volume = 0.38;
-}
+void preloadSoundEffect('/sounds/splash.mp3');
 
 function setCellRef(element: Element | null, index: number) {
   cellRefs.value[index] = element as HTMLButtonElement | null;
@@ -340,12 +336,10 @@ function isAnimatingTarget(index: number) {
 }
 
 function playSplashSound() {
-  if (!splashAudio) {
-    return;
-  }
-
-  splashAudio.currentTime = 0;
-  void splashAudio.play().catch(() => {
+  void playSoundEffect('/sounds/splash.mp3', {
+    volume: 0.38,
+    offset: 0.08
+  }).catch(() => {
     // Ignora bloqueos del navegador si el audio aún no puede reproducirse.
   });
 }

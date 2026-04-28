@@ -8,24 +8,27 @@
     linear-gradient(180deg, #f8fafc 0%, #ecfccb 48%, #d9f99d 100%);
   color: #1f2937;
 }
-
 html,
 body,
 #app {
-  min-height: 100dvh;
-}
-
-body {
+  width: 100%;
+  height: 100dvh;
   margin: 0;
-  min-height: 100dvh;
-  overscroll-behavior: none;
+  padding: 0;
+  overflow: hidden;
 }
 
-html, body {
+html,
+body {
   touch-action: manipulation;
   overscroll-behavior: none;
   -webkit-user-select: none;
   user-select: none;
+}
+
+body {
+  position: fixed;
+  inset: 0;
 }
 
 button {
@@ -119,4 +122,53 @@ button {
 .plants-front {
   animation: plants-front 7s ease-in-out infinite;
   transform-origin: center center;
+}
+
+
+
+.light-orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(8px);
+  opacity: .9;
+  background:
+    radial-gradient(circle,
+      rgba(255,255,255,.42) 0%,
+      rgba(255,255,255,.32) 30%,
+      rgba(255,255,255,.2) 55%,
+      transparent 72%);
+}
+
+.orb-a {
+  width: 20rem;
+  height: 20rem;
+  top: 6%;
+  left: -8%;
+  animation: orbMoveA 5s ease-in-out infinite alternate;
+}
+
+.orb-b {
+  width: 20rem;
+  height: 20rem;
+  bottom: -6%;
+  right: -8%;
+  animation: orbMoveB 6s ease-in-out infinite alternate;
+}
+
+@keyframes orbMoveA {
+  from {
+    transform: translate(0,0);
+  }
+  to {
+    transform: translate(35%,18%);
+  }
+}
+
+@keyframes orbMoveB {
+  from {
+    transform: translate(0,0);
+  }
+  to {
+    transform: translate(-28%,-16%);
+  }
 }

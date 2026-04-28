@@ -62,26 +62,30 @@ import {
   playBackgroundMusic,
   preloadBackgroundMusic
 } from '../composables/useBackgroundMusic';
+import {
+  preloadSoundEffect,
+  resumeSoundEffects
+} from '../composables/useSoundEffects';
 
 const emit = defineEmits<{
   start: [];
 }>();
 
 const assetsToPreload = [
-  'images/bottom_frog_jump.png',
-  'images/bottom_frog.png',
-  'images/game_bg.png',
-  'images/hoja.png',
-  'images/home_screen.png',
-  'images/frog_screen.png',
-  'images/linebg.png',
-  'images/out.png',
-  'images/top_frog_jump.png',
-  'images/top_frog.png',
-  'sounds/jump.mp3',
-  'sounds/music.mp3',
-  'sounds/splash.mp3',
-  'icon.svg'
+  '/images/bottom_frog_jump.png',
+  '/images/bottom_frog.png',
+  '/images/game_bg.png',
+  '/images/hoja.png',
+  '/images/home_screen.png',
+  '/images/frog_screen.png',
+  '/images/linebg.png',
+  '/images/out.png',
+  '/images/top_frog_jump.png',
+  '/images/top_frog.png',
+  '/sounds/jump.mp3',
+  '/sounds/music.mp3',
+  '/sounds/splash.mp3',
+  '/icon.svg'
 ];
 
 const isLoading = ref(true);
@@ -132,12 +136,17 @@ function preloadAsset(src: string) {
     return preloadBackgroundMusic();
   }
 
+  if (src === '/sounds/jump.mp3' || src === '/sounds/splash.mp3') {
+    return preloadSoundEffect(src);
+  }
+
   return src.endsWith('.mp3') || src.endsWith('.wav')
     ? preloadAudio(src)
     : preloadImage(src);
 }
 
 async function handleStart() {
+  await resumeSoundEffects();
   await playBackgroundMusic();
   emit('start');
 }
