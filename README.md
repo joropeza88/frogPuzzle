@@ -49,10 +49,10 @@ npm run build
 
 ## Publicación
 
-El proyecto está configurado con base:
+El proyecto está configurado sin base:
 
 ```txt
-/games/frogPuzzle/
+/
 ```
 
 Si lo publicas en otra ruta, ajusta `base` en [`vite.config.ts`](./vite.config.ts).
