@@ -1,24 +1,6 @@
 <template>
-  <main class="relative mx-auto flex w-full max-w-md flex-col px-4 h-dvh box-border overflow-hidden pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]">
-    
-    <div class="light-orb orb-a"></div>
-    <div class="light-orb orb-b"></div>
-    
-    <div class="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-      <div
-        :key="waveBurstKey"
-        class="screen-wave-burst"
-        :class="
-          waveCorner === 'top-left'
-            ? 'screen-wave-burst-top-left'
-            : 'screen-wave-burst-bottom-right'
-        "
-      >
-        <span class="screen-wave-ring screen-wave-ring-primary"></span>
-        <span class="screen-wave-ring screen-wave-ring-secondary"></span>
-      </div>
-    </div>
-    
+  <main class="relative mx-auto flex min-h-dvh w-full max-w-md flex-col box-border overflow-hidden px-4 pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]">
+    <RandomWaveOverlay />
     <!-- Fondo plantas -->
     <img
       src="/images/game_bg.png"
@@ -64,11 +46,12 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { onMounted, watch } from 'vue';
 import Swal from 'sweetalert2';
 import GameBoard from '../components/GameBoard.vue';
 import GameFooter from '../components/GameFooter.vue';
 import GameHeader from '../components/GameHeader.vue';
+import RandomWaveOverlay from '../components/RandomWaveOverlay.vue';
 import { playBackgroundMusic } from '../composables/useBackgroundMusic';
 import { useGameLogic, type LossReason } from '../composables/useGameLogic';
 
@@ -77,26 +60,8 @@ const emit = defineEmits<{
   completed: [];
 }>();
 
-const waveCorner = ref<'top-left' | 'bottom-right'>('top-left');
-const waveBurstKey = ref(0);
-let waveInterval: number | null = null;
-
-function triggerScreenWave() {
-  waveCorner.value = Math.random() > 0.5 ? 'top-left' : 'bottom-right';
-  waveBurstKey.value += 1;
-}
-
 onMounted(() => {
   void playBackgroundMusic();
-  triggerScreenWave();
-  waveInterval = window.setInterval(triggerScreenWave, 5200);
-});
-
-onBeforeUnmount(() => {
-  if (waveInterval !== null) {
-    window.clearInterval(waveInterval);
-    waveInterval = null;
-  }
 });
 
 const {
@@ -215,97 +180,3 @@ watch(status, (nextStatus) => {
   }, 1200);
 });
 </script>
-
-<style scoped>
-.screen-wave-burst {
-  position: absolute;
-  width: 140vh;
-  height: 140vh;
-  opacity: 0;
-  animation: screen-wave-fade 5.2s ease-out forwards;
-}
-
-.screen-wave-burst-top-left {
-  left: -86vh;
-  top: -86vh;
-}
-
-.screen-wave-burst-bottom-right {
-  right: -86vh;
-  bottom: -86vh;
-}
-
-.screen-wave-ring {
-  position: absolute;
-  inset: 0;
-  border-radius: 9999px;
-  border: 6px solid rgb(186 230 253 / 0.52);
-  opacity: 0;
-  transform: scale(0.12);
-  box-shadow:
-    0 0 0 2px rgb(255 255 255 / 0.08) inset,
-    0 0 90px rgb(56 189 248 / 0.18);
-}
-
-.screen-wave-ring::after {
-  content: '';
-  position: absolute;
-  inset: 2.5rem;
-  border-radius: inherit;
-  border: 3px solid rgb(255 255 255 / 0.22);
-}
-
-.screen-wave-ring-primary {
-  animation: screen-wave-expand 5.2s cubic-bezier(0.12, 0.65, 0.2, 1) forwards;
-}
-
-.screen-wave-ring-secondary {
-  inset: 5.5rem;
-  border-width: 4px;
-  border-color: rgb(125 211 252 / 0.38);
-  animation: screen-wave-expand-secondary 5.2s cubic-bezier(0.12, 0.65, 0.2, 1) forwards;
-}
-
-@keyframes screen-wave-fade {
-  0% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 1;
-  }
-}
-
-@keyframes screen-wave-expand {
-  0% {
-    opacity: 0;
-    transform: scale(0.12);
-  }
-
-  8% {
-    opacity: 0.72;
-  }
-
-  100% {
-    opacity: 0;
-    transform: scale(1.14);
-  }
-}
-
-@keyframes screen-wave-expand-secondary {
-  0%,
-  10% {
-    opacity: 0;
-    transform: scale(0.18);
-  }
-
-  22% {
-    opacity: 0.5;
-  }
-
-  100% {
-    opacity: 0;
-    transform: scale(1.18);
-  }
-}
-</style>

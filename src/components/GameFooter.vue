@@ -40,7 +40,7 @@
           <!-- panel interior -->
           <div
             class="
-              absolute left-2 right-12 top-1/2 -translate-y-1/2
+              absolute left-2 right-16 top-1/2 -translate-y-1/2
               h-11
               rounded-full
               bg-[#f8f0dd]

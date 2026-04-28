@@ -1,5 +1,5 @@
 <template>
-  <header class="pointer-events-none w-full flex items-center justify-between absolute top-6 left-0 p-4 z-10">
+  <header class="pointer-events-none w-full flex items-center justify-between absolute top-7 left-0 p-4 z-10">
     
     <button
     class="
@@ -33,7 +33,7 @@
     <!-- panel interior -->
     <div
       class="
-        absolute left-2 right-12 top-1/2 -translate-y-1/2
+        absolute left-2 right-16 top-1/2 -translate-y-1/2
         h-11
         rounded-full
         bg-[#f8f0dd]

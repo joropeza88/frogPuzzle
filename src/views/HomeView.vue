@@ -1,6 +1,6 @@
 <template>
-  <main class="relative mx-auto flex w-full max-w-md flex-col bg-[url('/images/home_screen.png')] bg-cover bg-center px-4 pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] h-dvh">
-    <RainOverlayDos />
+  <main class="relative mx-auto flex min-h-dvh w-full max-w-md flex-col box-border bg-[url('/images/home_screen.png')] bg-cover bg-center px-4 pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]">
+    <RainOverlay />
     <div class="frog-screen-wrap absolute left-1/2 top-1/2 -translate-y-1/3 -translate-x-1/2 w-[75%]">
       <span class="frog-screen-wave frog-screen-wave-primary"></span>
       <span class="frog-screen-wave frog-screen-wave-secondary"></span>
@@ -18,7 +18,7 @@
           type="button"
           class="
           relative
-          h-16 w-30
+          h-16 w-30 z-[1000]
           rounded-full font-black text-xl tracking-wide text-white
           border-4 border-[#039088]
           shadow-[0_4px_0_#005f5a,0_14px_18px_rgba(0,0,0,0.18)]
@@ -56,7 +56,7 @@
 </template>
 
 <script setup lang="ts">
-import RainOverlayDos from '../components/RainOverlayDos.vue';
+import RainOverlay from '../components/RainOverlay.vue';
 import { computed, onMounted, ref } from 'vue';
 import {
   playBackgroundMusic,
