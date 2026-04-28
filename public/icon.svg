@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title">
+  <title>Frog Puzzle</title>
+  <rect width="256" height="256" rx="56" fill="#0f172a"/>
+  <path d="M64 80c0-17.7 14.3-32 32-32h64c17.7 0 32 14.3 32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V80Z" fill="#14b8a6"/>
+  <circle cx="104" cy="84" r="16" fill="#ecfeff"/>
+  <circle cx="152" cy="84" r="16" fill="#ecfeff"/>
+  <circle cx="104" cy="84" r="7" fill="#0f172a"/>
+  <circle cx="152" cy="84" r="7" fill="#0f172a"/>
+  <path d="M92 144c10 12 24 18 36 18s26-6 36-18" fill="none" stroke="#083344" stroke-linecap="round" stroke-width="12"/>
+  <circle cx="128" cy="184" r="18" fill="#99f6e4" opacity=".65"/>
+</svg>

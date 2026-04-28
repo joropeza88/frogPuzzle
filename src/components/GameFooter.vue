@@ -1,0 +1,90 @@
+<template>
+  <footer class="space-y-3 absolute w-full bottom-6 left-0 p-4 z-40">
+    <div class="flex gap-3 w-full items-center">
+    
+        <button
+          @click="$emit('exit')"
+          class="
+            relative
+            h-16 w-16
+            rounded-full
+            bg-[#f7f1dd]
+            border-4 border-[#039088]
+            shadow-[0_4px_0_#005f5a,0_14px_18px_rgba(0,0,0,0.18)]
+            active:translate-y-[4px]
+            active:shadow-[0_2px_0_#005f5a,0_8px_12px_rgba(0,0,0,0.14)]
+            transition-all duration-150
+            flex items-center justify-center
+          "
+        >
+          
+          <img src="/images/out.png" alt="Salir" class="w-8 h-8"/>
+        </button>
+        
+        <button
+          class="
+            relative
+            h-16 w-40
+            ml-auto
+            rounded-full
+            bg-[#039088]
+            shadow-[0_5px_0_#005f5a,0_10px_14px_rgba(0,0,0,0.18)]
+            active:translate-y-[3px]
+            active:shadow-[0_2px_0_#005f5a,0_6px_10px_rgba(0,0,0,0.14)]
+            transition-all duration-150
+            flex items-center justify-end
+            pr-5
+          "
+        >
+          
+          <!-- panel interior -->
+          <div
+            class="
+              absolute left-2 right-12 top-1/2 -translate-y-1/2
+              h-11
+              rounded-full
+              bg-[#f8f0dd]
+              shadow-inner
+              flex items-center justify-center
+              font-black text-xl tracking-wide text-[#6f4a2f]
+            "
+          >
+            SALTOS
+          </div>
+
+          <!-- símbolo + -->
+          <span class="relative z-10 text-xl font-black text-[#fff3fb]">{{ movesCount }}</span>
+        </button>
+        
+    </div>
+  </footer>
+</template>
+
+<script setup lang="ts">
+import { computed } from 'vue';
+import type { GameStatus } from '../composables/useGameLogic';
+
+const props = defineProps<{
+  status: GameStatus;
+  movesCount: number;
+  canAdvance: boolean;
+}>();
+
+defineEmits<{
+  exit: [];
+  restart: [];
+  next: [];
+}>();
+
+const message = computed(() => {
+  if (props.status === 'won') {
+    return 'Nivel completado';
+  }
+
+  if (props.status === 'lost') {
+    return 'Tiempo agotado';
+  }
+
+  return 'Intercambia las ranas';
+});
+</script>
