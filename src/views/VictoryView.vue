@@ -116,7 +116,7 @@ const confettiPieces = [
 ] as const;
 
 async function shareGame() {
-  const url = window.location.origin;
+  const url = 'https://frog-puzzle-chi.vercel.app/';
   const title = 'Frog Puzzle';
   const text = 'Superé los 13 niveles del pantano. ¿Puedes lograrlo tú también?';
 
