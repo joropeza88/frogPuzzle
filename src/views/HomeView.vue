@@ -10,7 +10,7 @@
       class="relative flex flex-1 flex-col items-center justify-between overflow-hidden transition-opacity duration-300"
       :class="isLoading ? 'opacity-0' : 'opacity-100'"
     >
-      <div class="mt-6 inline-flex w-fit rounded-full bg-slate-900 px-4 py-2 text-xs font-bold uppercase tracking-[0.35em] text-white shadow-[0_14px_30px_rgba(15,23,42,0.2)]">
+      <div class="mt-12 inline-flex w-fit rounded-full bg-slate-900 px-4 py-2 text-xs font-bold uppercase tracking-[0.35em] text-white shadow-[0_14px_30px_rgba(15,23,42,0.2)]">
         Frog Puzzle
       </div>
 

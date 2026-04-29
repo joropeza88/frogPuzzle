@@ -1,5 +1,5 @@
 <template>
-  <header class="pointer-events-none w-full flex items-center justify-between absolute top-7 left-0 p-4 z-10">
+  <header class="pointer-events-none w-full flex items-center justify-between absolute top-10 left-0 p-4 z-10">
     
     <button
     class="

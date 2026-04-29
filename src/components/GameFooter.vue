@@ -1,5 +1,5 @@
 <template>
-  <footer class="space-y-3 absolute w-full bottom-6 left-0 p-4 z-40">
+  <footer class="space-y-3 absolute w-full bottom-6 left-0 p-4 z-10">
     <div class="flex gap-3 w-full items-center">
     
         <button
