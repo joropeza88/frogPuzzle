@@ -206,13 +206,13 @@ export function useGameLogic() {
     loadLevel(currentLevel.value);
   }
 
-  function nextLevel() {
+  function nextLevel({ startTimer = true }: { startTimer?: boolean } = {}) {
     if (currentLevel.value >= levels.maxLevel) {
-      loadLevel(levels.maxLevel);
+      loadLevel(levels.maxLevel, { startTimer });
       return;
     }
 
-    loadLevel(currentLevel.value + 1);
+    loadLevel(currentLevel.value + 1, { startTimer });
   }
 
   const canAdvance = computed(
