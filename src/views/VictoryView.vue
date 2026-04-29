@@ -81,7 +81,7 @@
             transition-all duration-150
             active:translate-y-[3px] active:shadow-[0_8px_16px_rgba(24,119,242,0.24)]
           "
-          @click="shareFacebook"
+          @click="shareGame"
         >
           <span class="flex h-8 w-8 items-center justify-center rounded-full bg-white text-xl font-black text-[#1877f2]">f</span>
           <span class="text-sm uppercase tracking-[0.22em]">Compartir</span>
@@ -115,13 +115,26 @@ const confettiPieces = [
   { id: 12, style: { '--confetti-x': '0.8rem', '--confetti-y': '-10.2rem', '--confetti-rotate': '45deg', '--confetti-delay': '50ms', '--confetti-color': '#facc15' } }
 ] as const;
 
-function shareFacebook() {
-  const shareUrl = encodeURIComponent(window.location.origin);
-  window.open(
-    `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`,
-    '_blank',
-    'noopener,noreferrer'
-  );
+async function shareGame() {
+  const url = window.location.origin;
+  const title = 'Frog Puzzle';
+  const text = 'Superé los 13 niveles del pantano. ¿Puedes lograrlo tú también?';
+
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title,
+        text,
+        url
+      });
+      return;
+    } catch {
+      // Si el usuario cancela o el sistema falla, intentamos el fallback web.
+    }
+  }
+
+  const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+  window.location.href = facebookShareUrl;
 }
 
 onMounted(() => {
