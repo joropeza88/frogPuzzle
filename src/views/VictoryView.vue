@@ -53,23 +53,40 @@
         </div>
       </div>
 
-      <button
+      <div class="relative z-30 flex items-center justify-between gap-2">
+        <button
+            type="button"
+            class="
+            relative
+            h-16 w-full
+            rounded-full font-black text-xl tracking-wide text-white
+            border-4 border-[#039088]
+            shadow-[0_4px_0_#005f5a,0_14px_18px_rgba(0,0,0,0.18)]
+            active:translate-y-[4px]
+            active:shadow-[0_2px_0_#005f5a,0_8px_12px_rgba(0,0,0,0.14)]
+            transition-all duration-150
+            flex items-center justify-center 
+            bg-gradient-to-b from-emerald-400 to-[#039088] my-4"
+            @click="$emit('exit')"
+          >
+            SALIR
+        </button>
+        <button
           type="button"
           class="
-          relative
-          h-16 w-40 mx-auto
-          rounded-full font-black text-xl tracking-wide text-white
-          border-4 border-[#039088]
-          shadow-[0_4px_0_#005f5a,0_14px_18px_rgba(0,0,0,0.18)]
-          active:translate-y-[4px]
-          active:shadow-[0_2px_0_#005f5a,0_8px_12px_rgba(0,0,0,0.14)]
-          transition-all duration-150
-          flex items-center justify-center 
-          bg-gradient-to-b from-emerald-400 to-[#039088] my-4"
-          @click="$emit('exit')"
+            relative mx-auto flex h-16 w-full max-w-xs items-center justify-center gap-3
+            rounded-[1.3rem] border border-white/12 bg-[linear-gradient(180deg,#1877f2_0%,#1459c6_100%)]
+            px-5 font-black tracking-wide text-white
+            shadow-[0_14px_26px_rgba(24,119,242,0.28),inset_0_1px_0_rgba(255,255,255,0.18)]
+            transition-all duration-150
+            active:translate-y-[3px] active:shadow-[0_8px_16px_rgba(24,119,242,0.24)]
+          "
+          @click="shareFacebook"
         >
-          SALIR
-      </button>
+          <span class="flex h-8 w-8 items-center justify-center rounded-full bg-white text-xl font-black text-[#1877f2]">f</span>
+          <span class="text-sm uppercase tracking-[0.22em]">Compartir</span>
+        </button>
+      </div>
 
     </section>
   </main>
@@ -97,6 +114,15 @@ const confettiPieces = [
   { id: 11, style: { '--confetti-x': '5.1rem', '--confetti-y': '-7.4rem', '--confetti-rotate': '320deg', '--confetti-delay': '110ms', '--confetti-color': '#22c55e' } },
   { id: 12, style: { '--confetti-x': '0.8rem', '--confetti-y': '-10.2rem', '--confetti-rotate': '45deg', '--confetti-delay': '50ms', '--confetti-color': '#facc15' } }
 ] as const;
+
+function shareFacebook() {
+  const shareUrl = encodeURIComponent(window.location.origin);
+  window.open(
+    `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`,
+    '_blank',
+    'noopener,noreferrer'
+  );
+}
 
 onMounted(() => {
   void preloadSoundEffect('/sounds/applause.mp3');
