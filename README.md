@@ -70,8 +70,9 @@ git@github.com:joropeza88/frogPuzzle.git
 
 Musica de fondo:
 
-Autor: Charlvera | https://pixabay.com/users/charlvera-11040068/
-Music: charlvera-whispering-meadows-calm-ambient-music-for-projects-332800
+- Autor: Charlvera 
+- Perfil: https://pixabay.com/users/charlvera-11040068/
+- Music: charlvera-whispering-meadows-calm-ambient-music-for-projects-332800
 
 Efectos de sonido:
 
