@@ -1,5 +1,5 @@
 <template>
-  <main class="app-screen relative mx-auto flex w-full max-w-md flex-col box-border bg-[url('/images/home_screen.png')] bg-cover bg-center px-4 pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]">
+  <main class="app-screen relative mx-auto flex w-full max-w-md flex-col box-border bg-[url('/images/home_screen.png')] bg-cover bg-center px-4">
     <RainOverlay />
     <div class="frog-screen-wrap absolute left-1/2 top-1/2 -translate-y-1/3 -translate-x-1/2 w-[75%]">
       <span class="frog-screen-wave frog-screen-wave-primary"></span>
