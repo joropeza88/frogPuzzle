@@ -37,16 +37,32 @@ export function useGameLogic() {
   let moveAnimationKey = 0;
 
   const levelConfig = computed(() => levels.generateLevel(currentLevel.value));
-  const timer = useTimer(() => {
-    if (status.value === 'playing') {
-      status.value = 'lost';
-      lossReason.value = 'timeout';
-      selectedIndex.value = null;
-      validMoves.value = [];
+  function playClockWarningSound() {
+    void playSoundEffect('/sounds/clock.mp3', {
+      volume: 0.65
+    }).catch(() => {
+      // Ignora bloqueos del navegador si el audio aún no puede reproducirse.
+    });
+  }
+
+  const timer = useTimer({
+    onExpire: () => {
+      if (status.value === 'playing') {
+        status.value = 'lost';
+        lossReason.value = 'timeout';
+        selectedIndex.value = null;
+        validMoves.value = [];
+      }
+    },
+    onTenSecondsLeft: () => {
+      if (status.value === 'playing') {
+        playClockWarningSound();
+      }
     }
   });
 
   void preloadSoundEffect('/sounds/jump.mp3');
+  void preloadSoundEffect('/sounds/clock.mp3');
 
   function clearError() {
     if (errorTimeout !== null) {
@@ -77,7 +93,7 @@ export function useGameLogic() {
 
   function playJumpSound() {
     void playSoundEffect('/sounds/jump.mp3', {
-      volume: 0.55,
+      volume: 0.8,
       offset: 0.015
     }).catch(() => {
       // Ignora bloqueos del navegador si el audio aún no puede reproducirse.

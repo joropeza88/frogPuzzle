@@ -84,7 +84,10 @@ const assetsToPreload = [
   '/images/out.png',
   '/images/top_frog_jump.png',
   '/images/top_frog.png',
+  '/sounds/applause.mp3',
   '/sounds/button-press.mp3',
+  '/sounds/clock.mp3',
+  '/sounds/lose.mp3',
   '/sounds/victory.mp3',
   '/sounds/jump.mp3',
   '/sounds/music.mp3',
@@ -142,8 +145,11 @@ function preloadAsset(src: string) {
   }
 
   if (
+    src === '/sounds/applause.mp3' ||
     src === '/sounds/button-press.mp3' ||
+    src === '/sounds/clock.mp3' ||
     src === '/sounds/jump.mp3' ||
+    src === '/sounds/lose.mp3' ||
     src === '/sounds/splash.mp3'
   ) {
     return preloadSoundEffect(src);
@@ -161,7 +167,7 @@ async function handleStart() {
 
   isStarting.value = true;
   await resumeSoundEffects();
-  void playSoundEffect('/sounds/button-press.mp3', { volume: 0.55 });
+  void playSoundEffect('/sounds/button-press.mp3', { volume: 0.7 });
   await new Promise((resolve) => window.setTimeout(resolve, 160));
   await playBackgroundMusic();
   emit('start');

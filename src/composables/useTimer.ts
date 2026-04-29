@@ -1,9 +1,15 @@
 import { computed, onBeforeUnmount, ref } from 'vue';
 
-export function useTimer(onExpire: () => void) {
+type TimerOptions = {
+  onExpire: () => void;
+  onTenSecondsLeft?: () => void;
+};
+
+export function useTimer({ onExpire, onTenSecondsLeft }: TimerOptions) {
   const secondsLeft = ref(0);
   const isRunning = ref(false);
   let intervalId: number | null = null;
+  let hasTriggeredTenSecondWarning = false;
 
   function stop() {
     if (intervalId !== null) {
@@ -23,6 +29,11 @@ export function useTimer(onExpire: () => void) {
 
     secondsLeft.value -= 1;
 
+    if (secondsLeft.value === 10 && !hasTriggeredTenSecondWarning) {
+      hasTriggeredTenSecondWarning = true;
+      onTenSecondsLeft?.();
+    }
+
     if (secondsLeft.value <= 0) {
       stop();
       onExpire();
@@ -41,6 +52,7 @@ export function useTimer(onExpire: () => void) {
   function reset(nextSeconds: number) {
     stop();
     secondsLeft.value = nextSeconds;
+    hasTriggeredTenSecondWarning = nextSeconds <= 10;
   }
 
   const formattedTime = computed(() => {
@@ -54,6 +66,7 @@ export function useTimer(onExpire: () => void) {
   onBeforeUnmount(stop);
 
   return {
+    secondsLeft,
     isRunning,
     formattedTime,
     start,

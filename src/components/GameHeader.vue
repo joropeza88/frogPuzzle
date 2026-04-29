@@ -51,20 +51,25 @@
     
 
   <button
+      :class="isUrgent ? 'border-red-500 shadow-[0_4px_0_#991b1b,0_14px_18px_rgba(127,29,29,0.28)]' : 'border-[#039088] shadow-[0_4px_0_#005f5a,0_14px_18px_rgba(0,0,0,0.18)]'"
       class="
         relative
         h-16 w-30
         rounded-full
         bg-[#f7f1dd]
-        border-4 border-[#039088]
-        shadow-[0_4px_0_#005f5a,0_14px_18px_rgba(0,0,0,0.18)]
+        border-4
         active:translate-y-[4px]
         active:shadow-[0_2px_0_#005f5a,0_8px_12px_rgba(0,0,0,0.14)]
         transition-all duration-150
         flex items-center justify-center
       "
     >
-      <span class="font-black text-xl tracking-wide text-[#6f4a2f]">{{ formattedTime }}</span>
+      <span
+        :class="isUrgent ? 'text-red-600 timer-urgent-shake' : 'text-[#6f4a2f]'"
+        class="font-black text-xl tracking-wide"
+      >
+        {{ formattedTime }}
+      </span>
   </button>
     
   </header>
@@ -75,5 +80,44 @@ defineProps<{
   level: number;
   maxLevel: number;
   formattedTime: string;
+  isUrgent: boolean;
 }>();
 </script>
+
+<style scoped>
+.timer-urgent-shake {
+  animation: timer-urgent-shake 1s ease-in-out infinite;
+  text-shadow: 0 0 12px rgb(220 38 38 / 0.24);
+}
+
+@keyframes timer-urgent-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  12% {
+    transform: translateX(-1px) rotate(-1deg);
+  }
+
+  24% {
+    transform: translateX(2px) rotate(1deg);
+  }
+
+  36% {
+    transform: translateX(-2px) rotate(-1deg);
+  }
+
+  48% {
+    transform: translateX(2px) rotate(1deg);
+  }
+
+  60% {
+    transform: translateX(-1px) rotate(-0.5deg);
+  }
+
+  72% {
+    transform: translateX(1px) rotate(0.5deg);
+  }
+}
+</style>

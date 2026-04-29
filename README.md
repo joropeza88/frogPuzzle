@@ -75,12 +75,18 @@ Music: charlvera-whispering-meadows-calm-ambient-music-for-projects-332800
 
 Efectos de sonido:
 
-Autor: DouubleDucks | https://pixabay.com/es/users/doubleducks-45864631/
-Sound: 11L-Game_complete_notifi-1749489486836
+- Autor: floraphonic 
+- Perfil: https://pixabay.com/es/users/floraphonic-38928062/
+- Sound: Classic Game Action Positive 1
+- Sound: Classic Game Action Negative 9
 
-Autor: freesound_community | https://pixabay.com/es/users/freesound_community-46691455/
-Sound: Splash
-Sound: Boing Spring Mouth harp 04-20-13 4
+Autor: freesound_community 
+- Perfil: https://pixabay.com/es/users/freesound_community-46691455/
+- Sound: Splash
+- Sound: Boing Spring Mouth harp 04-20-13 4
+- Sound: tick tock
+- Sounf: Applause, small audience
 
-Autor: DRAGON STUDIO | https://pixabay.com/es/users/dragon-studio-38165424/
-Sound: Button Press 3
+Autor: DRAGON STUDIO
+- Perfil: https://pixabay.com/es/users/dragon-studio-38165424/
+- Sound: Button Press 3

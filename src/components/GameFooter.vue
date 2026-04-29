@@ -107,7 +107,7 @@ async function handleExit() {
 
   isExitPressed.value = true;
   await resumeSoundEffects();
-  void playSoundEffect('/sounds/button-press.mp3', { volume: 0.55 });
+  void playSoundEffect('/sounds/button-press.mp3', { volume: 0.7 });
   await new Promise((resolve) => window.setTimeout(resolve, 160));
   emit('exit');
 }

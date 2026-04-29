@@ -337,7 +337,7 @@ function isAnimatingTarget(index: number) {
 
 function playSplashSound() {
   void playSoundEffect('/sounds/splash.mp3', {
-    volume: 0.38,
+    volume: 0.3,
     offset: 0.08
   }).catch(() => {
     // Ignora bloqueos del navegador si el audio aún no puede reproducirse.

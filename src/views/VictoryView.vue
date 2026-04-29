@@ -1,5 +1,23 @@
 <template>
   <main class="app-screen relative mx-auto flex w-full max-w-md flex-col box-border bg-[radial-gradient(circle_at_top,_rgba(16,185,129,0.36),_transparent_30%),linear-gradient(180deg,_#06281f_0%,_#0f172a_58%,_#020617_100%)] px-4 text-white">
+    <div class="pointer-events-none absolute inset-0 z-20 overflow-hidden">
+      <div class="confetti-burst confetti-burst-primary">
+        <span
+          v-for="piece in confettiPieces"
+          :key="`primary-${piece.id}`"
+          class="confetti-piece"
+          :style="piece.style"
+        ></span>
+      </div>
+      <div class="confetti-burst confetti-burst-secondary">
+        <span
+          v-for="piece in confettiPieces"
+          :key="`secondary-${piece.id}`"
+          class="confetti-piece"
+          :style="piece.style"
+        ></span>
+      </div>
+    </div>
     <section class="relative flex flex-1 flex-col justify-between overflow-hidden rounded-[2.5rem] border border-white/10 bg-white/8 p-6 shadow-[0_28px_80px_rgba(15,23,42,0.36)] backdrop-blur mt-16 mb-4">
       <div class="pointer-events-none absolute -top-10 right-0 h-32 w-32 rounded-full bg-emerald-400/20 blur-3xl"></div>
       <div class="pointer-events-none absolute bottom-12 left-0 h-28 w-28 rounded-full bg-cyan-300/12 blur-3xl"></div>
@@ -47,7 +65,7 @@
           active:shadow-[0_2px_0_#005f5a,0_8px_12px_rgba(0,0,0,0.14)]
           transition-all duration-150
           flex items-center justify-center 
-          bg-gradient-to-b from-emerald-400 to-[#039088] mb-10"
+          bg-gradient-to-b from-emerald-400 to-[#039088] my-4"
           @click="$emit('exit')"
         >
           SALIR
@@ -58,7 +76,99 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted } from 'vue';
+import { playSoundEffect, preloadSoundEffect } from '../composables/useSoundEffects';
+
 defineEmits<{
   exit: [];
 }>();
+
+const confettiPieces = [
+  { id: 1, style: { '--confetti-x': '-7rem', '--confetti-y': '-11rem', '--confetti-rotate': '-240deg', '--confetti-delay': '0ms', '--confetti-color': '#fde047' } },
+  { id: 2, style: { '--confetti-x': '-5.6rem', '--confetti-y': '-9.4rem', '--confetti-rotate': '-180deg', '--confetti-delay': '40ms', '--confetti-color': '#fb7185' } },
+  { id: 3, style: { '--confetti-x': '-3.8rem', '--confetti-y': '-12rem', '--confetti-rotate': '-140deg', '--confetti-delay': '70ms', '--confetti-color': '#2dd4bf' } },
+  { id: 4, style: { '--confetti-x': '-2rem', '--confetti-y': '-8.6rem', '--confetti-rotate': '-90deg', '--confetti-delay': '20ms', '--confetti-color': '#60a5fa' } },
+  { id: 5, style: { '--confetti-x': '0rem', '--confetti-y': '-12.8rem', '--confetti-rotate': '0deg', '--confetti-delay': '90ms', '--confetti-color': '#f59e0b' } },
+  { id: 6, style: { '--confetti-x': '2.3rem', '--confetti-y': '-8.8rem', '--confetti-rotate': '90deg', '--confetti-delay': '30ms', '--confetti-color': '#a78bfa' } },
+  { id: 7, style: { '--confetti-x': '4.2rem', '--confetti-y': '-11.4rem', '--confetti-rotate': '150deg', '--confetti-delay': '65ms', '--confetti-color': '#34d399' } },
+  { id: 8, style: { '--confetti-x': '6.4rem', '--confetti-y': '-9.7rem', '--confetti-rotate': '220deg', '--confetti-delay': '10ms', '--confetti-color': '#f472b6' } },
+  { id: 9, style: { '--confetti-x': '7.4rem', '--confetti-y': '-12.2rem', '--confetti-rotate': '280deg', '--confetti-delay': '55ms', '--confetti-color': '#38bdf8' } },
+  { id: 10, style: { '--confetti-x': '-6.2rem', '--confetti-y': '-7.2rem', '--confetti-rotate': '-310deg', '--confetti-delay': '85ms', '--confetti-color': '#f97316' } },
+  { id: 11, style: { '--confetti-x': '5.1rem', '--confetti-y': '-7.4rem', '--confetti-rotate': '320deg', '--confetti-delay': '110ms', '--confetti-color': '#22c55e' } },
+  { id: 12, style: { '--confetti-x': '0.8rem', '--confetti-y': '-10.2rem', '--confetti-rotate': '45deg', '--confetti-delay': '50ms', '--confetti-color': '#facc15' } }
+] as const;
+
+onMounted(() => {
+  void preloadSoundEffect('/sounds/applause.mp3');
+  void playSoundEffect('/sounds/applause.mp3', { volume: 0.72 });
+});
 </script>
+
+<style scoped>
+.confetti-burst {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: 0;
+  height: 0;
+  transform: translate(-50%, -50%);
+}
+
+.confetti-burst-primary {
+  animation: confetti-burst-fade 1.2s ease-out forwards;
+}
+
+.confetti-burst-secondary {
+  animation: confetti-burst-fade 1.2s ease-out 0.55s forwards;
+  opacity: 0;
+}
+
+.confetti-piece {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0.7rem;
+  height: 1.2rem;
+  border-radius: 0.2rem;
+  background: var(--confetti-color);
+  box-shadow: 0 0 10px rgb(255 255 255 / 0.16);
+  opacity: 0;
+  transform: translate(-50%, -50%) rotate(0deg) scale(0.4);
+}
+
+.confetti-burst-primary .confetti-piece {
+  animation: confetti-pop 1.1s cubic-bezier(0.12, 0.75, 0.2, 1) forwards;
+  animation-delay: var(--confetti-delay);
+}
+
+.confetti-burst-secondary .confetti-piece {
+  animation: confetti-pop 1.1s cubic-bezier(0.12, 0.75, 0.2, 1) forwards;
+  animation-delay: calc(0.55s + var(--confetti-delay));
+}
+
+@keyframes confetti-burst-fade {
+  0%,
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes confetti-pop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(0deg) scale(0.3);
+  }
+
+  12% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform:
+      translate(calc(-50% + var(--confetti-x)), calc(-50% + var(--confetti-y)))
+      rotate(var(--confetti-rotate))
+      scale(1);
+  }
+}
+</style>

@@ -18,6 +18,7 @@
         :level="currentLevel"
         :max-level="maxLevel"
         :formatted-time="timer.formattedTime"
+        :is-urgent="isTimerUrgent"
       />
       
     <section class="flex-1 flex justify-center items-center w-full h-full"> 
@@ -47,7 +48,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, watch } from 'vue';
+import { computed, onMounted, watch } from 'vue';
 import Swal from 'sweetalert2';
 import GameBoard from '../components/GameBoard.vue';
 import GameFooter from '../components/GameFooter.vue';
@@ -65,6 +66,7 @@ const emit = defineEmits<{
 
 onMounted(() => {
   void playBackgroundMusic();
+  void preloadSoundEffect('/sounds/lose.mp3');
   void preloadSoundEffect('/sounds/victory.mp3');
   void showLevelOneInstructions();
 });
@@ -92,6 +94,10 @@ const {
 let activeDialog: Promise<void> | null = null;
 let dialogDelayTimeout: number | null = null;
 let hasShownLevelOneInstructions = false;
+
+const isTimerUrgent = computed(
+  () => timer.isRunning.value && timer.secondsLeft.value <= 10
+);
 
 async function showLevelOneInstructions() {
   if (hasShownLevelOneInstructions || currentLevel.value !== 1 || timer.isRunning.value) {
@@ -168,6 +174,10 @@ async function showLoseDialog(reason: LossReason | null) {
       ? 'Ese movimiento dejó el tablero sin jugadas posibles. Intenta otra estrategia.'
       : 'No alcanzaste a ordenar el pantano. Intenta de nuevo.';
 
+  void playSoundEffect('/sounds/lose.mp3', {
+    volume: 0.6
+  });
+
   await Swal.fire({
     title,
     text,
@@ -200,6 +210,11 @@ watch(status, (nextStatus) => {
     window.clearTimeout(dialogDelayTimeout);
   }
 
+  const delay =
+    nextStatus === 'lost' && lossReason.value === 'timeout'
+      ? 0
+      : 1200;
+
   dialogDelayTimeout = window.setTimeout(() => {
     activeDialog =
       nextStatus === 'won'
@@ -213,6 +228,6 @@ watch(status, (nextStatus) => {
     });
 
     dialogDelayTimeout = null;
-  }, 1200);
+  }, delay);
 });
 </script>
