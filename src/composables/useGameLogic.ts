@@ -101,7 +101,11 @@ export function useGameLogic() {
     }, 520);
   }
 
-  function loadLevel(level: number) {
+  function startCurrentLevelTimer() {
+    timer.start();
+  }
+
+  function loadLevel(level: number, { startTimer = true }: { startTimer?: boolean } = {}) {
     currentLevel.value = Math.min(Math.max(level, 1), levels.maxLevel);
     const nextConfig = levels.generateLevel(currentLevel.value);
 
@@ -114,7 +118,10 @@ export function useGameLogic() {
     clearError();
     clearMoveAnimation();
     timer.reset(nextConfig.timeLimit);
-    timer.start();
+
+    if (startTimer) {
+      timer.start();
+    }
   }
 
   function selectIndex(index: number) {
@@ -196,7 +203,7 @@ export function useGameLogic() {
     () => status.value === 'won' && currentLevel.value < levels.maxLevel
   );
 
-  loadLevel(1);
+  loadLevel(1, { startTimer: false });
 
   return {
     board,
@@ -212,6 +219,7 @@ export function useGameLogic() {
     canAdvance,
     levelConfig,
     timer,
+    startCurrentLevelTimer,
     selectIndex,
     resetLevel,
     nextLevel

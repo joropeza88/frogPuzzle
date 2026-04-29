@@ -69,10 +69,18 @@ git@github.com:joropeza88/frogPuzzle.git
 ## Creditos
 
 Musica de fondo:
-charlvera-whispering-meadows-calm-ambient-music-for-projects-332800
 
-Autor:
-Charlvera
+Autor: Charlvera | https://pixabay.com/users/charlvera-11040068/
+Music: charlvera-whispering-meadows-calm-ambient-music-for-projects-332800
 
-Perfil:
-https://pixabay.com/users/charlvera-11040068/
+Efectos de sonido:
+
+Autor: DouubleDucks | https://pixabay.com/es/users/doubleducks-45864631/
+Sound: 11L-Game_complete_notifi-1749489486836
+
+Autor: freesound_community | https://pixabay.com/es/users/freesound_community-46691455/
+Sound: Splash
+Sound: Boing Spring Mouth harp 04-20-13 4
+
+Autor: DRAGON STUDIO | https://pixabay.com/es/users/dragon-studio-38165424/
+Sound: Button Press 3

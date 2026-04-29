@@ -1,6 +1,7 @@
 <template>
   <main class="app-screen relative mx-auto flex w-full max-w-md flex-col box-border overflow-hidden px-4">
     <RandomWaveOverlay />
+    <FireFly />
     <!-- Fondo plantas -->
     <img
       src="/images/game_bg.png"
@@ -52,7 +53,9 @@ import GameBoard from '../components/GameBoard.vue';
 import GameFooter from '../components/GameFooter.vue';
 import GameHeader from '../components/GameHeader.vue';
 import RandomWaveOverlay from '../components/RandomWaveOverlay.vue';
+import FireFly from '../components/FireFly.vue';
 import { playBackgroundMusic } from '../composables/useBackgroundMusic';
+import { playSoundEffect, preloadSoundEffect } from '../composables/useSoundEffects';
 import { useGameLogic, type LossReason } from '../composables/useGameLogic';
 
 const emit = defineEmits<{
@@ -62,6 +65,8 @@ const emit = defineEmits<{
 
 onMounted(() => {
   void playBackgroundMusic();
+  void preloadSoundEffect('/sounds/victory.mp3');
+  void showLevelOneInstructions();
 });
 
 const {
@@ -78,6 +83,7 @@ const {
   canAdvance,
   levelConfig,
   timer,
+  startCurrentLevelTimer,
   selectIndex,
   resetLevel,
   nextLevel
@@ -85,12 +91,42 @@ const {
 
 let activeDialog: Promise<void> | null = null;
 let dialogDelayTimeout: number | null = null;
+let hasShownLevelOneInstructions = false;
+
+async function showLevelOneInstructions() {
+  if (hasShownLevelOneInstructions || currentLevel.value !== 1 || timer.isRunning.value) {
+    return;
+  }
+
+  hasShownLevelOneInstructions = true;
+
+  await Swal.fire({
+    title: 'Cómo jugar',
+    text: 'Toca una rana y luego una hoja marcada para moverla. Debes intercambiar de lugar las ranas verdes y cafés antes de que se acabe el tiempo.',
+    width: '300px',
+    buttonsStyling: false,
+    customClass: {
+      popup: '!bg-[#f7f1dd] !bg-[url("/images/linebg.png")] border-4 border-[#039088] shadow-[0_4px_0_#005f5a,0_14px_18px_rgba(0,0,0,0.18)]',
+      confirmButton: 'relative h-16 w-50 uppercase rounded-full font-black text-xl tracking-wide text-white border-4 border-[#039088] shadow-[0_4px_0_#005f5a,0_14px_18px_rgba(0,0,0,0.18)] active:translate-y-[4px] active:shadow-[0_2px_0_#005f5a,0_8px_12px_rgba(0,0,0,0.14)] transition-all duration-150 flex items-center justify-center bg-gradient-to-b from-emerald-400 to-[#039088]',
+    },
+    confirmButtonText: 'Entendido',
+    allowOutsideClick: false,
+    allowEscapeKey: false,
+    heightAuto: false
+  });
+
+  startCurrentLevelTimer();
+}
 
 async function showWinDialog() {
   if (currentLevel.value === maxLevel) {
     emit('completed');
     return;
   }
+
+  void playSoundEffect('/sounds/victory.mp3', {
+    volume: 0.6
+  });
 
   const result = await Swal.fire({
     title: 'Nivel completado',

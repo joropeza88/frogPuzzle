@@ -10,12 +10,13 @@
       class="relative flex flex-1 flex-col items-center justify-between overflow-hidden transition-opacity duration-300"
       :class="isLoading ? 'opacity-0' : 'opacity-100'"
     >
-      <div class="mt-12 inline-flex w-fit rounded-full bg-slate-900 px-4 py-2 text-xs font-bold uppercase tracking-[0.35em] text-white shadow-[0_14px_30px_rgba(15,23,42,0.2)]">
+      <div class="mt-16 inline-flex w-fit rounded-full bg-slate-900 px-4 py-2 text-xs font-bold uppercase tracking-[0.35em] text-white shadow-[0_14px_30px_rgba(15,23,42,0.2)]">
         Frog Puzzle
       </div>
 
       <button
           type="button"
+          :class="isStarting ? 'translate-y-[4px] shadow-[0_2px_0_#005f5a,0_8px_12px_rgba(0,0,0,0.14)]' : ''"
           class="
           relative
           h-16 w-30 z-[1000]
@@ -27,7 +28,7 @@
           transition-all duration-150
           flex items-center justify-center 
           bg-gradient-to-b from-emerald-400 to-[#039088] mb-10"
-          :disabled="isLoading"
+          :disabled="isLoading || isStarting"
           @click="handleStart"
         >
           {{ isLoading ? 'CARGADO...' : 'JUGAR' }}
@@ -63,6 +64,7 @@ import {
   preloadBackgroundMusic
 } from '../composables/useBackgroundMusic';
 import {
+  playSoundEffect,
   preloadSoundEffect,
   resumeSoundEffects
 } from '../composables/useSoundEffects';
@@ -82,6 +84,8 @@ const assetsToPreload = [
   '/images/out.png',
   '/images/top_frog_jump.png',
   '/images/top_frog.png',
+  '/sounds/button-press.mp3',
+  '/sounds/victory.mp3',
   '/sounds/jump.mp3',
   '/sounds/music.mp3',
   '/sounds/splash.mp3',
@@ -89,6 +93,7 @@ const assetsToPreload = [
 ];
 
 const isLoading = ref(true);
+const isStarting = ref(false);
 const loadedAssets = ref(0);
 
 const progress = computed(() =>
@@ -136,7 +141,11 @@ function preloadAsset(src: string) {
     return preloadBackgroundMusic();
   }
 
-  if (src === '/sounds/jump.mp3' || src === '/sounds/splash.mp3') {
+  if (
+    src === '/sounds/button-press.mp3' ||
+    src === '/sounds/jump.mp3' ||
+    src === '/sounds/splash.mp3'
+  ) {
     return preloadSoundEffect(src);
   }
 
@@ -146,7 +155,14 @@ function preloadAsset(src: string) {
 }
 
 async function handleStart() {
+  if (isLoading.value || isStarting.value) {
+    return;
+  }
+
+  isStarting.value = true;
   await resumeSoundEffects();
+  void playSoundEffect('/sounds/button-press.mp3', { volume: 0.55 });
+  await new Promise((resolve) => window.setTimeout(resolve, 160));
   await playBackgroundMusic();
   emit('start');
 }

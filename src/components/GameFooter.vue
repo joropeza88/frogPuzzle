@@ -3,7 +3,10 @@
     <div class="flex gap-3 w-full items-center">
     
         <button
-          @click="$emit('exit')"
+          type="button"
+          :class="isExitPressed ? 'translate-y-[4px] shadow-[0_2px_0_#005f5a,0_8px_12px_rgba(0,0,0,0.14)]' : ''"
+          :disabled="isExitPressed"
+          @click="handleExit"
           class="
             relative
             h-16 w-16
@@ -61,7 +64,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
+import {
+  playSoundEffect,
+  preloadSoundEffect,
+  resumeSoundEffects
+} from '../composables/useSoundEffects';
 import type { GameStatus } from '../composables/useGameLogic';
 
 const props = defineProps<{
@@ -70,11 +78,15 @@ const props = defineProps<{
   canAdvance: boolean;
 }>();
 
-defineEmits<{
+const emit = defineEmits<{
   exit: [];
   restart: [];
   next: [];
 }>();
+
+const isExitPressed = ref(false);
+
+void preloadSoundEffect('/sounds/button-press.mp3');
 
 const message = computed(() => {
   if (props.status === 'won') {
@@ -87,4 +99,16 @@ const message = computed(() => {
 
   return 'Intercambia las ranas';
 });
+
+async function handleExit() {
+  if (isExitPressed.value) {
+    return;
+  }
+
+  isExitPressed.value = true;
+  await resumeSoundEffects();
+  void playSoundEffect('/sounds/button-press.mp3', { volume: 0.55 });
+  await new Promise((resolve) => window.setTimeout(resolve, 160));
+  emit('exit');
+}
 </script>
