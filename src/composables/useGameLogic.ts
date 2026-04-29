@@ -77,7 +77,7 @@ export function useGameLogic() {
 
   function playJumpSound() {
     void playSoundEffect('/sounds/jump.mp3', {
-      volume: 0.45,
+      volume: 0.55,
       offset: 0.015
     }).catch(() => {
       // Ignora bloqueos del navegador si el audio aún no puede reproducirse.
