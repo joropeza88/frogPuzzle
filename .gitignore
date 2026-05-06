@@ -18,4 +18,4 @@ pnpm-debug.log*
 coverage/
 *.tsbuildinfo
 
-frog_game_prompt.md
+engine.md

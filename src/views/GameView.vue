@@ -4,19 +4,19 @@
     <FireFly />
     <!-- Fondo plantas -->
     <img
-      src="/images/game_bg.png"
-      class="absolute top-0 left-0 h-[110%] w-[110%] object-cover z-10 pointer-events-none opacity-35 saturate-75 blur-[1px] plants-back"
+      src="/images/game_bg.webp"
+      class="absolute top-0 left-0 h-[110%] w-[110%] object-cover z-10 pointer-events-none opacity-24 plants-back"
     />
 
     <!-- Frente plantas -->
     <img
-      src="/images/game_bg.png"
-      class="absolute top-0 left-0 h-[110%] w-[110%] object-cover z-10 pointer-events-none drop-shadow-md opacity-100 plants-front"
+      src="/images/game_bg.webp"
+      class="absolute top-0 left-0 h-[110%] w-[110%] object-cover z-10 pointer-events-none opacity-92 plants-front"
     />
+    <div class="pointer-events-none absolute inset-0 z-10 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.18),transparent_34%),linear-gradient(180deg,rgba(15,118,110,0.06),rgba(15,23,42,0.16))]"></div>
     
     <GameHeader
         :level="currentLevel"
-        :max-level="maxLevel"
         :formatted-time="timer.formattedTime"
         :is-urgent="isTimerUrgent"
       />
@@ -37,12 +37,8 @@
     </section>
 
     <GameFooter
-        :status="status"
         :moves-count="movesCount"
-        :can-advance="canAdvance"
         @exit="emit('exit')"
-        @restart="resetLevel"
-        @next="advanceWithTransition"
       />
 
     <div
@@ -74,6 +70,7 @@ import FireFly from '../components/FireFly.vue';
 import { playBackgroundMusic } from '../composables/useBackgroundMusic';
 import { playSoundEffect, preloadSoundEffect } from '../composables/useSoundEffects';
 import { useGameLogic, type LossReason } from '../composables/useGameLogic';
+import { waitForAnimationFrameDelay } from '../utils/animationFrame';
 
 const emit = defineEmits<{
   exit: [];
@@ -98,7 +95,6 @@ const {
   movesCount,
   errorIndex,
   activeMove,
-  canAdvance,
   levelConfig,
   timer,
   startCurrentLevelTimer,
@@ -124,9 +120,7 @@ const isTimerUrgent = computed(
 );
 
 function wait(duration: number) {
-  return new Promise<void>((resolve) => {
-    window.setTimeout(resolve, duration);
-  });
+  return waitForAnimationFrameDelay(duration);
 }
 
 async function showLevelOneInstructions() {
@@ -142,7 +136,7 @@ async function showLevelOneInstructions() {
     width: '300px',
     buttonsStyling: false,
     customClass: {
-      popup: '!bg-[#f7f1dd] !bg-[url("/images/linebg.png")] border-4 border-[#039088] shadow-[0_4px_0_#005f5a,0_14px_18px_rgba(0,0,0,0.18)]',
+      popup: '!bg-[#f7f1dd] !bg-[url("/images/linebg.webp")] border-4 border-[#039088] shadow-[0_4px_0_#005f5a,0_14px_18px_rgba(0,0,0,0.18)]',
       confirmButton: 'relative h-16 w-50 uppercase rounded-full font-black text-xl tracking-wide text-white border-4 border-[#039088] shadow-[0_4px_0_#005f5a,0_14px_18px_rgba(0,0,0,0.18)] active:translate-y-[4px] active:shadow-[0_2px_0_#005f5a,0_8px_12px_rgba(0,0,0,0.14)] transition-all duration-150 flex items-center justify-center bg-gradient-to-b from-emerald-400 to-[#039088]',
     },
     confirmButtonText: 'Entendido',
@@ -172,7 +166,7 @@ async function showWinDialog() {
     width: '300px',
     buttonsStyling: false,
     customClass: {
-      popup: '!bg-[#f7f1dd] !bg-[url("/images/linebg.png")] border-4 border-[#039088] shadow-[0_4px_0_#005f5a,0_14px_18px_rgba(0,0,0,0.18)]',
+      popup: '!bg-[#f7f1dd] !bg-[url("/images/linebg.webp")] border-4 border-[#039088] shadow-[0_4px_0_#005f5a,0_14px_18px_rgba(0,0,0,0.18)]',
       confirmButton: 'relative h-16 w-50 uppercase rounded-full font-black text-xl tracking-wide text-white border-4 border-[#039088] shadow-[0_4px_0_#005f5a,0_14px_18px_rgba(0,0,0,0.18)] active:translate-y-[4px] active:shadow-[0_2px_0_#005f5a,0_8px_12px_rgba(0,0,0,0.14)] transition-all duration-150 flex items-center justify-center bg-gradient-to-b from-emerald-400 to-[#039088]',
       denyButton: 'bg-slate-800 hover:bg-slate-900 text-white font-semibold rounded-full px-4 py-2 mx-2'
     },
@@ -216,7 +210,7 @@ async function showLoseDialog(reason: LossReason | null) {
     width: '300px',
     buttonsStyling: false,
     customClass: {
-      popup: '!bg-[#f7f1dd] !bg-[url("/images/linebg.png")] border-4 border-[#039088] shadow-[0_4px_0_#005f5a,0_14px_18px_rgba(0,0,0,0.18)]',
+      popup: '!bg-[#f7f1dd] !bg-[url("/images/linebg.webp")] border-4 border-[#039088] shadow-[0_4px_0_#005f5a,0_14px_18px_rgba(0,0,0,0.18)]',
       confirmButton: 'relative h-16 w-50 uppercase rounded-full font-black text-xl tracking-wide text-white border-4 border-[#039088] shadow-[0_4px_0_#005f5a,0_14px_18px_rgba(0,0,0,0.18)] active:translate-y-[4px] active:shadow-[0_2px_0_#005f5a,0_8px_12px_rgba(0,0,0,0.14)] transition-all duration-150 flex items-center justify-center bg-gradient-to-b from-emerald-400 to-[#039088]',
       denyButton: 'bg-slate-800 hover:bg-slate-900 text-white font-semibold rounded-full px-4 py-2 mx-2'
     },

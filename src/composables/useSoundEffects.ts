@@ -27,6 +27,10 @@ function getAudioContext() {
   return audioContext;
 }
 
+export function getSharedAudioContext() {
+  return getAudioContext();
+}
+
 export async function resumeSoundEffects() {
   const context = getAudioContext();
 

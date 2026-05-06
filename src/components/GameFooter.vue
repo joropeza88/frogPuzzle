@@ -21,7 +21,7 @@
           "
         >
           
-          <img src="/images/out.png" alt="Salir" class="w-8 h-8"/>
+          <img src="/images/out.webp" alt="Salir" class="w-8 h-8"/>
         </button>
         
         <button
@@ -64,41 +64,25 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import {
   playSoundEffect,
   preloadSoundEffect,
   resumeSoundEffects
 } from '../composables/useSoundEffects';
-import type { GameStatus } from '../composables/useGameLogic';
+import { waitForAnimationFrameDelay } from '../utils/animationFrame';
 
 const props = defineProps<{
-  status: GameStatus;
   movesCount: number;
-  canAdvance: boolean;
 }>();
 
 const emit = defineEmits<{
   exit: [];
-  restart: [];
-  next: [];
 }>();
 
 const isExitPressed = ref(false);
 
 void preloadSoundEffect('/sounds/button-press.mp3');
-
-const message = computed(() => {
-  if (props.status === 'won') {
-    return 'Nivel completado';
-  }
-
-  if (props.status === 'lost') {
-    return 'Tiempo agotado';
-  }
-
-  return 'Intercambia las ranas';
-});
 
 async function handleExit() {
   if (isExitPressed.value) {
@@ -108,7 +92,7 @@ async function handleExit() {
   isExitPressed.value = true;
   await resumeSoundEffects();
   void playSoundEffect('/sounds/button-press.mp3', { volume: 0.7 });
-  await new Promise((resolve) => window.setTimeout(resolve, 160));
+  await waitForAnimationFrameDelay(160);
   emit('exit');
 }
 </script>

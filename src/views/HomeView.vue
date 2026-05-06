@@ -1,10 +1,10 @@
 <template>
-  <main class="app-screen relative mx-auto flex w-full max-w-md flex-col box-border bg-[url('/images/home_screen.png')] bg-cover bg-center px-4">
+  <main class="app-screen relative mx-auto flex w-full max-w-md flex-col box-border bg-[url('/images/home_screen.webp')] bg-cover bg-center px-4">
     <RainOverlay />
     <div class="frog-screen-wrap absolute left-1/2 top-1/2 -translate-y-1/3 -translate-x-1/2 w-[75%]">
       <span class="frog-screen-wave frog-screen-wave-primary"></span>
       <span class="frog-screen-wave frog-screen-wave-secondary"></span>
-      <img src="/public/images/frog_screen.png" class="drop-shadow-xl float-water"/>
+      <img src="/images/frog_screen.webp" class="frog-screen-image float-water"/>
     </div>
     <section
       class="relative flex flex-1 flex-col items-center justify-between overflow-hidden transition-opacity duration-300"
@@ -38,7 +38,7 @@
 
     <div
       v-if="isLoading"
-      class="absolute inset-0 z-20 flex flex-col items-center justify-center gap-5 bg-slate-950/82 backdrop-blur-sm"
+      class="absolute inset-0 z-20 flex flex-col items-center justify-center gap-5 bg-[rgba(2,6,23,0.84)]"
     >
       <div class="h-16 w-16 rounded-full border-4 border-white/20 border-t-emerald-400 animate-spin"></div>
       <div class="space-y-2 text-center text-white">
@@ -68,22 +68,23 @@ import {
   preloadSoundEffect,
   resumeSoundEffects
 } from '../composables/useSoundEffects';
+import { waitForAnimationFrameDelay } from '../utils/animationFrame';
 
 const emit = defineEmits<{
   start: [];
 }>();
 
 const assetsToPreload = [
-  '/images/bottom_frog_jump.png',
-  '/images/bottom_frog.png',
-  '/images/game_bg.png',
-  '/images/hoja.png',
-  '/images/home_screen.png',
-  '/images/frog_screen.png',
-  '/images/linebg.png',
-  '/images/out.png',
-  '/images/top_frog_jump.png',
-  '/images/top_frog.png',
+  '/images/bottom_frog_jump.webp',
+  '/images/bottom_frog.webp',
+  '/images/game_bg.webp',
+  '/images/hoja.webp',
+  '/images/home_screen.webp',
+  '/images/frog_screen.webp',
+  '/images/linebg.webp',
+  '/images/out.webp',
+  '/images/top_frog_jump.webp',
+  '/images/top_frog.webp',
   '/sounds/applause.mp3',
   '/sounds/button-press.mp3',
   '/sounds/clock.mp3',
@@ -168,7 +169,7 @@ async function handleStart() {
   isStarting.value = true;
   await resumeSoundEffects();
   void playSoundEffect('/sounds/button-press.mp3', { volume: 0.7 });
-  await new Promise((resolve) => window.setTimeout(resolve, 160));
+  await waitForAnimationFrameDelay(160);
   await playBackgroundMusic();
   emit('start');
 }
@@ -183,15 +184,19 @@ onMounted(async () => {
 
   void playBackgroundMusic();
 
-  window.setTimeout(() => {
-    isLoading.value = false;
-  }, 180);
+  await waitForAnimationFrameDelay(180);
+  isLoading.value = false;
 });
 </script>
 
 <style scoped>
 .frog-screen-wrap {
   pointer-events: none;
+}
+
+.frog-screen-image {
+  opacity: 0.98;
+  transform: translateZ(0);
 }
 
 .frog-screen-wave {
@@ -206,7 +211,7 @@ onMounted(async () => {
   transform: translate(-50%, -50%) scale(0.35);
   box-shadow:
     0 0 0 1px rgb(255 255 255 / 0.08) inset,
-    0 0 34px rgb(56 189 248 / 0.16);
+    0 0 22px rgb(56 189 248 / 0.12);
   animation: frog-screen-wave 3.6s ease-out infinite;
 }
 

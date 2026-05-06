@@ -1,67 +1,77 @@
-const MUSIC_SRC = 'sounds/music.mp3';
+import { getSharedAudioContext } from './useSoundEffects';
 
-const backgroundMusic =
-  typeof Audio === 'undefined' ? null : new Audio(MUSIC_SRC);
+const MUSIC_SRC = '/sounds/music.mp3';
+const MUSIC_VOLUME = 0.3;
 
-if (backgroundMusic) {
-  backgroundMusic.loop = true;
-  backgroundMusic.preload = 'auto';
-  backgroundMusic.volume = 0.3;
-}
+let backgroundBufferPromise: Promise<AudioBuffer | null> | null = null;
+let backgroundSource: AudioBufferSourceNode | null = null;
+let backgroundGain: GainNode | null = null;
 
 export function preloadBackgroundMusic() {
-  if (!backgroundMusic) {
-    return Promise.resolve();
+  const context = getSharedAudioContext();
+
+  if (!context) {
+    return Promise.resolve(null);
   }
 
-  if (backgroundMusic.readyState >= HTMLMediaElement.HAVE_ENOUGH_DATA) {
-    return Promise.resolve();
+  if (backgroundBufferPromise) {
+    return backgroundBufferPromise;
   }
 
-  return new Promise<void>((resolve) => {
-    let settled = false;
-
-    const finish = () => {
-      if (settled) {
-        return;
+  backgroundBufferPromise = fetch(MUSIC_SRC)
+    .then(async (response) => {
+      if (!response.ok) {
+        throw new Error(`Failed to load background music: ${MUSIC_SRC}`);
       }
 
-      settled = true;
-      backgroundMusic.oncanplaythrough = null;
-      backgroundMusic.onerror = null;
-      resolve();
-    };
+      const arrayBuffer = await response.arrayBuffer();
+      return context.decodeAudioData(arrayBuffer.slice(0));
+    })
+    .catch(() => null);
 
-    backgroundMusic.oncanplaythrough = finish;
-    backgroundMusic.onerror = finish;
-    backgroundMusic.load();
-
-    window.setTimeout(finish, 2400);
-  });
+  return backgroundBufferPromise;
 }
 
 export async function playBackgroundMusic() {
-  if (!backgroundMusic) {
+  const context = getSharedAudioContext();
+
+  if (!context) {
     return false;
   }
 
-  if (!backgroundMusic.paused) {
+  if (context.state === 'suspended') {
+    await context.resume();
+  }
+
+  if (backgroundSource) {
     return true;
   }
 
-  try {
-    await backgroundMusic.play();
-    return true;
-  } catch {
+  const buffer = await preloadBackgroundMusic();
+
+  if (!buffer) {
     return false;
   }
-}
 
-export function stopBackgroundMusic() {
-  if (!backgroundMusic) {
-    return;
-  }
+  const source = context.createBufferSource();
+  const gainNode = context.createGain();
 
-  backgroundMusic.pause();
-  backgroundMusic.currentTime = 0;
+  source.buffer = buffer;
+  source.loop = true;
+  gainNode.gain.value = MUSIC_VOLUME;
+
+  source.connect(gainNode);
+  gainNode.connect(context.destination);
+  source.start(0);
+  source.onended = () => {
+    if (backgroundSource === source) {
+      backgroundSource = null;
+      backgroundGain = null;
+    }
+  };
+
+  backgroundSource = source;
+  backgroundGain = gainNode;
+
+  return true;
 }

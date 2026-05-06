@@ -7,7 +7,7 @@
     
       <div
         v-for="(cell, index) in board"
-        :key="`${index}-${cell ?? 'empty'}`"
+        :key="index"
         class="relative flex h-24 w-24 items-center justify-center"
         :style="cellLayoutStyle(index)"
       >
@@ -20,8 +20,8 @@
         </div>
         <button
           type="button"
-          class="z-10 relative flex h-24 w-24 items-center justify-center rounded-full border-0 transition duration-200 bg-[url('/images/hoja.png')] bg-cover bg-center drop-shadow-xl"
-          :class="cellClasses(index, cell)"
+          class="z-10 relative flex h-24 w-24 items-center justify-center rounded-full border-0 transition duration-200 bg-[url('/images/hoja.webp')] bg-cover bg-center"
+          :class="cellClasses(index)"
           :ref="(element) => setCellRef(element, index)"
           @click="$emit('select', index)"
         >
@@ -50,11 +50,11 @@
           ></span>
         </div>
         <div
-          v-if="validMoves.includes(index)"
+          v-show="validMoves.includes(index)"
           class="absolute inset-1 rounded-full border-2 border-dashed border-white animate-pulse"
         ></div>
         <div
-          v-if="selectedIndex === index"
+          v-show="selectedIndex === index"
           class="absolute inset-1 rounded-full border-2 border-white/80"
         ></div>
         <FrogPiece
@@ -429,11 +429,11 @@ watch(
   }
 );
 
-function cellClasses(index: number, cell: BoardCell) {
+function cellClasses(index: number) {
   return {
     'leaf-liftoff': originEffect.value?.fromIndex === index,
     'leaf-impact': landingEffect.value?.toIndex === index,
-    'scale-[1.02] shadow-[0_14px_24px_rgba(20,184,166,0.18)]':
+    'scale-[1.02]':
       props.validMoves.includes(index) || props.selectedIndex === index,
     'animate-pulse':
       props.errorIndex === index
@@ -486,9 +486,7 @@ function triggerWave(index: number) {
   border: 3px solid rgb(255 255 255 / 0.55);
   opacity: 0;
   transform: scale(0.18);
-  box-shadow:
-    0 0 0 1px rgb(255 255 255 / 0.08) inset,
-    0 0 28px rgb(125 211 252 / 0.16);
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.08) inset;
 }
 
 .water-wave-ring-secondary {
@@ -511,7 +509,6 @@ function triggerWave(index: number) {
   transform: translate(-50%, -50%) scale(0.45);
   animation: water-splash 420ms ease-out forwards;
   animation-delay: var(--particle-delay);
-  box-shadow: 0 0 10px rgb(125 211 252 / 0.3);
 }
 
 .water-ripple {
@@ -524,9 +521,7 @@ function triggerWave(index: number) {
   border-radius: 9999px;
   opacity: 0;
   transform: translate(-50%, -50%) scale(0.35);
-  box-shadow:
-    0 0 0 1px rgb(255 255 255 / 0.08) inset,
-    0 0 18px rgb(255 255 255 / 0.08);
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.08) inset;
 }
 
 .water-ripple::after {
@@ -552,12 +547,10 @@ function triggerWave(index: number) {
 .water-particle-origin {
   animation-duration: 300ms;
   opacity: 0;
-  filter: saturate(0.9);
 }
 
 .water-particle-landing {
   animation-duration: 480ms;
-  box-shadow: 0 0 14px rgb(125 211 252 / 0.38);
 }
 
 .animate-wave {
@@ -599,44 +592,44 @@ function triggerWave(index: number) {
 @keyframes leaf-impact {
   0% {
     transform: scale(1);
-    filter: brightness(1);
+    opacity: 1;
   }
 
   35% {
     transform: scale(0.94);
-    filter: brightness(0.92);
+    opacity: 0.92;
   }
 
   65% {
     transform: scale(1.03);
-    filter: brightness(1.04);
+    opacity: 1;
   }
 
   100% {
     transform: scale(1);
-    filter: brightness(1);
+    opacity: 1;
   }
 }
 
 @keyframes leaf-liftoff {
   0% {
     transform: scale(1);
-    filter: brightness(1);
+    opacity: 1;
   }
 
   35% {
     transform: scale(0.97);
-    filter: brightness(0.97);
+    opacity: 0.94;
   }
 
   68% {
     transform: scale(1.015);
-    filter: brightness(1.02);
+    opacity: 1;
   }
 
   100% {
     transform: scale(1);
-    filter: brightness(1);
+    opacity: 1;
   }
 }
 

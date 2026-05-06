@@ -81,13 +81,13 @@ Efectos de sonido:
 - Sound: Classic Game Action Positive 1
 - Sound: Classic Game Action Negative 9
 
-Autor: freesound_community 
+- Autor: freesound_community 
 - Perfil: https://pixabay.com/es/users/freesound_community-46691455/
 - Sound: Splash
 - Sound: Boing Spring Mouth harp 04-20-13 4
 - Sound: tick tock
-- Sounf: Applause, small audience
+- Sound: Applause, small audience
 
-Autor: DRAGON STUDIO
+- Autor: DRAGON STUDIO
 - Perfil: https://pixabay.com/es/users/dragon-studio-38165424/
 - Sound: Button Press 3

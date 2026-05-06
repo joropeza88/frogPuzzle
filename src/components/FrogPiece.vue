@@ -4,7 +4,7 @@
     :class="stateClasses"
   >
     <div
-      class="absolute inset-0 z-10 animate-[breathe_2.4s_ease-in-out_infinite] drop-shadow-xl"
+      class="absolute inset-0 z-10 animate-[breathe_2.4s_ease-in-out_infinite]"
       :class="baseColorFrog"
       :style="orientationStyle"
     ></div>
@@ -19,7 +19,7 @@ import type { FrogColor } from '../utils/movementRules';
 const props = defineProps<{
   color: FrogColor;
   selected?: boolean;
-  isJumping: { type: boolean, default: false};
+  isJumping?: boolean;
   orientation?: 'default' | 'side' | 'left-corner' | 'right-corner';
   rotation?: number;
 }>();
@@ -27,11 +27,11 @@ const props = defineProps<{
 const baseColorFrog = computed(() =>
   props.color === 'green'
     ? props.isJumping
-      ? "bg-[url('/images/top_frog_jump.png')] bg-cover bg-center"
-      : "bg-[url('/images/top_frog.png')] bg-cover bg-center"
+      ? "bg-[url('/images/top_frog_jump.webp')] bg-cover bg-center"
+      : "bg-[url('/images/top_frog.webp')] bg-cover bg-center"
     : props.isJumping
-      ? "bg-[url('/images/bottom_frog_jump.png')] bg-cover bg-center"
-      : "bg-[url('/images/bottom_frog.png')] bg-cover bg-center"
+      ? "bg-[url('/images/bottom_frog_jump.webp')] bg-cover bg-center"
+      : "bg-[url('/images/bottom_frog.webp')] bg-cover bg-center"
 );
 
 const stateClasses = computed(() => ({

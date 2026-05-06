@@ -49,7 +49,6 @@ const drops = Array.from({ length: 26 }, (_, index) => ({
     rgba(255,255,255,0),
     rgba(255,255,255,0.9)
   );
-  box-shadow: 0 0 6px rgba(255,255,255,0.35);
 }
 
 .drizzle-ripple {
@@ -62,7 +61,6 @@ const drops = Array.from({ length: 26 }, (_, index) => ({
   border: 1.5px solid rgba(255,255,255,0.55);
   border-radius: 9999px;
   opacity: 0;
-  filter: blur(0.3px);
   animation: drizzle-ripple 3s linear infinite;
 }
 

@@ -78,7 +78,6 @@
 <script setup lang="ts">
 defineProps<{
   level: number;
-  maxLevel: number;
   formattedTime: string;
   isUrgent: boolean;
 }>();

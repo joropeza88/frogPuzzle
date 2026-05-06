@@ -1,9 +1,11 @@
 <template>
   <div class="pointer-events-none absolute inset-0 z-0 overflow-hidden">
     <div
-      :key="waveBurstKey"
+      v-for="burst in bursts"
+      :key="burst.id"
       class="screen-wave-burst"
-      :style="waveBurstStyle"
+      :class="{ 'screen-wave-burst-active': burst.isActive }"
+      :style="burst.style"
     >
       <span class="screen-wave-ring screen-wave-ring-primary"></span>
       <span class="screen-wave-ring screen-wave-ring-secondary"></span>
@@ -12,37 +14,81 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
+import { onBeforeUnmount, onMounted, ref } from 'vue';
 
-const waveBurstKey = ref(0);
-const waveBurstX = ref(50);
-const waveBurstY = ref(50);
-const waveBurstSize = ref(9.5);
-let waveInterval: number | null = null;
+type WaveBurst = {
+  id: number;
+  isActive: boolean;
+  style: {
+    left: string;
+    top: string;
+    width: string;
+    height: string;
+  };
+};
 
-const waveBurstStyle = computed(() => ({
-  left: `${waveBurstX.value}%`,
-  top: `${waveBurstY.value}%`,
-  width: `${waveBurstSize.value}rem`,
-  height: `${waveBurstSize.value}rem`
-}));
+const bursts = ref<WaveBurst[]>([
+  createBurst(0),
+  createBurst(1),
+  createBurst(2)
+]);
 
-function triggerScreenWave() {
-  waveBurstX.value = 18 + Math.random() * 64;
-  waveBurstY.value = 14 + Math.random() * 72;
-  waveBurstSize.value = 8 + Math.random() * 4.5;
-  waveBurstKey.value += 1;
+let loopFrameId = 0;
+let nextBurstAt = 0;
+let nextBurstIndex = 0;
+
+function randomBurstStyle() {
+  return {
+    left: `${18 + Math.random() * 64}%`,
+    top: `${14 + Math.random() * 72}%`,
+    width: `${8 + Math.random() * 4.5}rem`,
+    height: `${8 + Math.random() * 4.5}rem`
+  };
+}
+
+function createBurst(id: number): WaveBurst {
+  return {
+    id,
+    isActive: false,
+    style: randomBurstStyle()
+  };
+}
+
+function triggerBurst() {
+  const burst = bursts.value[nextBurstIndex];
+
+  burst.isActive = false;
+  burst.style = randomBurstStyle();
+
+  window.requestAnimationFrame(() => {
+    burst.isActive = true;
+  });
+
+  nextBurstIndex = (nextBurstIndex + 1) % bursts.value.length;
+}
+
+function animationLoop(now: number) {
+  if (!nextBurstAt) {
+    nextBurstAt = now;
+  }
+
+  if (now >= nextBurstAt) {
+    triggerBurst();
+    nextBurstAt = now + 2600 + Math.random() * 1100;
+  }
+
+  loopFrameId = window.requestAnimationFrame(animationLoop);
 }
 
 onMounted(() => {
-  triggerScreenWave();
-  waveInterval = window.setInterval(triggerScreenWave, 3200);
+  triggerBurst();
+  loopFrameId = window.requestAnimationFrame(animationLoop);
 });
 
 onBeforeUnmount(() => {
-  if (waveInterval !== null) {
-    window.clearInterval(waveInterval);
-    waveInterval = null;
+  if (loopFrameId) {
+    window.cancelAnimationFrame(loopFrameId);
+    loopFrameId = 0;
   }
 });
 </script>
@@ -52,6 +98,9 @@ onBeforeUnmount(() => {
   position: absolute;
   opacity: 0;
   transform: translate(-50%, -50%);
+}
+
+.screen-wave-burst-active {
   animation: screen-wave-fade 5.2s ease-out forwards;
 }
 
@@ -62,9 +111,7 @@ onBeforeUnmount(() => {
   border: 4px solid rgb(186 230 253 / 0.42);
   opacity: 0;
   transform: scale(0.18);
-  box-shadow:
-    0 0 0 1px rgb(255 255 255 / 0.08) inset,
-    0 0 36px rgb(56 189 248 / 0.16);
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.08) inset;
 }
 
 .screen-wave-ring::after {
@@ -75,7 +122,7 @@ onBeforeUnmount(() => {
   border: 2px solid rgb(255 255 255 / 0.18);
 }
 
-.screen-wave-ring-primary {
+.screen-wave-burst-active .screen-wave-ring-primary {
   animation: screen-wave-expand 5.2s cubic-bezier(0.12, 0.65, 0.2, 1) forwards;
 }
 
@@ -83,6 +130,9 @@ onBeforeUnmount(() => {
   inset: 1rem;
   border-width: 3px;
   border-color: rgb(125 211 252 / 0.34);
+}
+
+.screen-wave-burst-active .screen-wave-ring-secondary {
   animation: screen-wave-expand-secondary 5.2s cubic-bezier(0.12, 0.65, 0.2, 1) forwards;
 }
 
