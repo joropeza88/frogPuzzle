@@ -72,8 +72,13 @@ import { playSoundEffect, preloadSoundEffect } from '../composables/useSoundEffe
 import { useGameLogic, type LossReason } from '../composables/useGameLogic';
 import { waitForAnimationFrameDelay } from '../utils/animationFrame';
 
+const props = defineProps<{
+  initialLevel: number;
+}>();
+
 const emit = defineEmits<{
   exit: [];
+  levelCompleted: [level: number];
   completed: [];
 }>();
 
@@ -101,7 +106,7 @@ const {
   selectIndex,
   resetLevel,
   nextLevel
-} = useGameLogic();
+} = useGameLogic(props.initialLevel);
 
 let activeDialog: Promise<void> | null = null;
 let dialogDelayTimeout: number | null = null;
@@ -149,6 +154,8 @@ async function showLevelOneInstructions() {
 }
 
 async function showWinDialog() {
+  emit('levelCompleted', currentLevel.value);
+
   if (currentLevel.value === maxLevel) {
     emit('completed');
     return;

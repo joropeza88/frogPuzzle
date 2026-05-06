@@ -21,7 +21,7 @@ export interface MoveAnimation {
   jumped: boolean;
 }
 
-export function useGameLogic() {
+export function useGameLogic(initialLevel = 1) {
   const levels = useLevels();
   const currentLevel = ref(1);
   const board = ref<BoardCell[]>([]);
@@ -218,7 +218,7 @@ export function useGameLogic() {
     () => status.value === 'won' && currentLevel.value < levels.maxLevel
   );
 
-  loadLevel(1, { startTimer: false });
+  loadLevel(initialLevel, { startTimer: false });
 
   return {
     board,
