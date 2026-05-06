@@ -1,6 +1,5 @@
 type SoundEffectOptions = {
   volume?: number;
-  offset?: number;
 };
 
 const AudioContextCtor =
@@ -75,7 +74,7 @@ export function preloadSoundEffect(src: string) {
 
 export async function playSoundEffect(
   src: string,
-  { volume = 1, offset = 0 }: SoundEffectOptions = {}
+  { volume = 1 }: SoundEffectOptions = {}
 ) {
   const context = getAudioContext();
 
@@ -95,13 +94,12 @@ export async function playSoundEffect(
 
   const source = context.createBufferSource();
   const gainNode = context.createGain();
-  const safeOffset = Math.min(Math.max(offset, 0), Math.max(buffer.duration - 0.01, 0));
 
   source.buffer = buffer;
   gainNode.gain.value = volume;
   source.connect(gainNode);
   gainNode.connect(context.destination);
-  source.start(0, safeOffset);
+  source.start();
 
   return true;
 }

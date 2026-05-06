@@ -39,8 +39,7 @@ export function useGameLogic() {
   const levelConfig = computed(() => levels.generateLevel(currentLevel.value));
   function playClockWarningSound() {
     void playSoundEffect('/sounds/clock.mp3', {
-      volume: 0.65,
-      offset: 0.3
+      volume: 0.65
     }).catch(() => {
       // Ignora bloqueos del navegador si el audio aún no puede reproducirse.
     });
@@ -94,8 +93,7 @@ export function useGameLogic() {
 
   function playJumpSound() {
     void playSoundEffect('/sounds/jump.mp3', {
-      volume: 0.8,
-      offset: 0.015
+      volume: 0.8
     }).catch(() => {
       // Ignora bloqueos del navegador si el audio aún no puede reproducirse.
     });
