@@ -75,3 +75,16 @@ export async function playBackgroundMusic() {
 
   return true;
 }
+
+export function stopBackgroundMusic() {
+  if (!backgroundSource) {
+    return;
+  }
+
+  backgroundSource.onended = null;
+  backgroundSource.stop();
+  backgroundSource.disconnect();
+  backgroundGain?.disconnect();
+  backgroundSource = null;
+  backgroundGain = null;
+}

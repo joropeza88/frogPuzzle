@@ -1,5 +1,5 @@
 <template>
-  <div class="pointer-events-none fixed inset-0 z-[999] overflow-hidden">
+  <div class="pointer-events-none absolute inset-0 z-[999] overflow-hidden">
     <div
       v-for="drop in drops"
       :key="drop.id"

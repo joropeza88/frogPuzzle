@@ -60,8 +60,8 @@
 import RainOverlay from '../components/RainOverlay.vue';
 import { computed, onMounted, ref } from 'vue';
 import {
-  playBackgroundMusic,
-  preloadBackgroundMusic
+  preloadBackgroundMusic,
+  stopBackgroundMusic
 } from '../composables/useBackgroundMusic';
 import {
   playSoundEffect,
@@ -170,19 +170,18 @@ async function handleStart() {
   await resumeSoundEffects();
   void playSoundEffect('/sounds/button-press.mp3', { volume: 0.7 });
   await waitForAnimationFrameDelay(160);
-  await playBackgroundMusic();
   emit('start');
 }
 
 onMounted(async () => {
+  stopBackgroundMusic();
+
   await Promise.all(
     assetsToPreload.map(async (asset) => {
       await preloadAsset(asset);
       loadedAssets.value += 1;
     })
   );
-
-  void playBackgroundMusic();
 
   await waitForAnimationFrameDelay(180);
   isLoading.value = false;

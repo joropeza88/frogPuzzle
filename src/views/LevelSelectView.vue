@@ -58,9 +58,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import FireFly from '../components/FireFly.vue';
 import RandomWaveOverlay from '../components/RandomWaveOverlay.vue';
+import { playBackgroundMusic } from '../composables/useBackgroundMusic';
 import {
   playSoundEffect,
   preloadSoundEffect,
@@ -82,6 +83,10 @@ const emit = defineEmits<{
 const isExitPressed = ref(false);
 
 void preloadSoundEffect('/sounds/button-press.mp3');
+
+onMounted(() => {
+  void playBackgroundMusic();
+});
 
 const levels = computed(() =>
   Array.from({ length: props.maxLevel }, (_, index) => {
