@@ -1,10 +1,13 @@
 <template>
-  <main class="app-screen relative mx-auto flex w-full max-w-md flex-col box-border bg-[url('/images/home_screen.webp')] bg-cover bg-center px-4">
+  <main
+    class="app-screen relative mx-auto flex w-full max-w-md flex-col box-border bg-cover bg-center px-4"
+    :style="homeBackgroundStyle"
+  >
     <RainOverlay />
     <div class="frog-screen-wrap absolute left-1/2 top-1/2 -translate-y-1/3 -translate-x-1/2 w-[75%]">
       <span class="frog-screen-wave frog-screen-wave-primary"></span>
       <span class="frog-screen-wave frog-screen-wave-secondary"></span>
-      <img src="/images/frog_screen.webp" class="frog-screen-image float-water"/>
+      <img :src="FROG_SCREEN_IMAGE" class="frog-screen-image float-water"/>
     </div>
     <section
       class="relative flex flex-1 flex-col items-center justify-between overflow-hidden transition-opacity duration-300"
@@ -68,6 +71,27 @@ import {
   preloadSoundEffect,
   resumeSoundEffects
 } from '../composables/useSoundEffects';
+import {
+  APP_ICON,
+  APPLAUSE_SOUND,
+  BOTTOM_FROG_IMAGE,
+  BOTTOM_FROG_JUMP_IMAGE,
+  BUTTON_PRESS_SOUND,
+  CLOCK_SOUND,
+  EXIT_IMAGE,
+  FROG_SCREEN_IMAGE,
+  GAME_BG_IMAGE,
+  HOME_SCREEN_IMAGE,
+  JUMP_SOUND,
+  LINE_BG_IMAGE,
+  LILY_PAD_IMAGE,
+  LOSE_SOUND,
+  MUSIC_SOUND,
+  SPLASH_SOUND,
+  TOP_FROG_IMAGE,
+  TOP_FROG_JUMP_IMAGE,
+  VICTORY_SOUND
+} from '../constants/assets';
 import { waitForAnimationFrameDelay } from '../utils/animationFrame';
 
 const emit = defineEmits<{
@@ -75,26 +99,30 @@ const emit = defineEmits<{
 }>();
 
 const assetsToPreload = [
-  '/images/bottom_frog_jump.webp',
-  '/images/bottom_frog.webp',
-  '/images/game_bg.webp',
-  '/images/hoja.webp',
-  '/images/home_screen.webp',
-  '/images/frog_screen.webp',
-  '/images/linebg.webp',
-  '/images/out.webp',
-  '/images/top_frog_jump.webp',
-  '/images/top_frog.webp',
-  '/sounds/applause.mp3',
-  '/sounds/button-press.mp3',
-  '/sounds/clock.mp3',
-  '/sounds/lose.mp3',
-  '/sounds/victory.mp3',
-  '/sounds/jump.mp3',
-  '/sounds/music.mp3',
-  '/sounds/splash.mp3',
-  '/icon.svg'
+  BOTTOM_FROG_JUMP_IMAGE,
+  BOTTOM_FROG_IMAGE,
+  GAME_BG_IMAGE,
+  LILY_PAD_IMAGE,
+  HOME_SCREEN_IMAGE,
+  FROG_SCREEN_IMAGE,
+  LINE_BG_IMAGE,
+  EXIT_IMAGE,
+  TOP_FROG_JUMP_IMAGE,
+  TOP_FROG_IMAGE,
+  APPLAUSE_SOUND,
+  BUTTON_PRESS_SOUND,
+  CLOCK_SOUND,
+  LOSE_SOUND,
+  VICTORY_SOUND,
+  JUMP_SOUND,
+  MUSIC_SOUND,
+  SPLASH_SOUND,
+  APP_ICON
 ];
+
+const homeBackgroundStyle = {
+  backgroundImage: `url(${HOME_SCREEN_IMAGE})`
+};
 
 const isLoading = ref(true);
 const isStarting = ref(false);
@@ -141,17 +169,17 @@ function preloadAudio(src: string) {
 }
 
 function preloadAsset(src: string) {
-  if (src === '/sounds/music.mp3') {
+  if (src === MUSIC_SOUND) {
     return preloadBackgroundMusic();
   }
 
   if (
-    src === '/sounds/applause.mp3' ||
-    src === '/sounds/button-press.mp3' ||
-    src === '/sounds/clock.mp3' ||
-    src === '/sounds/jump.mp3' ||
-    src === '/sounds/lose.mp3' ||
-    src === '/sounds/splash.mp3'
+    src === APPLAUSE_SOUND ||
+    src === BUTTON_PRESS_SOUND ||
+    src === CLOCK_SOUND ||
+    src === JUMP_SOUND ||
+    src === LOSE_SOUND ||
+    src === SPLASH_SOUND
   ) {
     return preloadSoundEffect(src);
   }
@@ -168,7 +196,7 @@ async function handleStart() {
 
   isStarting.value = true;
   await resumeSoundEffects();
-  void playSoundEffect('/sounds/button-press.mp3', { volume: 0.7 });
+  void playSoundEffect(BUTTON_PRESS_SOUND, { volume: 0.7 });
   await waitForAnimationFrameDelay(160);
   emit('start');
 }

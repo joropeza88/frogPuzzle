@@ -20,8 +20,9 @@
         </div>
         <button
           type="button"
-          class="z-10 relative flex h-24 w-24 items-center justify-center rounded-full border-0 transition duration-200 bg-[url('/images/hoja.webp')] bg-cover bg-center"
+          class="z-10 relative flex h-24 w-24 items-center justify-center rounded-full border-0 transition duration-200 bg-cover bg-center"
           :class="cellClasses(index)"
+          :style="lilyPadStyle"
           :ref="(element) => setCellRef(element, index)"
           @click="$emit('select', index)"
         >
@@ -82,6 +83,7 @@
 
 <script setup lang="ts">
 import { computed, nextTick, ref, watch } from 'vue';
+import { LILY_PAD_IMAGE, SPLASH_SOUND } from '../constants/assets';
 import { playSoundEffect, preloadSoundEffect } from '../composables/useSoundEffects';
 import FrogPiece from './FrogPiece.vue';
 import type { BoardCell } from '../utils/movementRules';
@@ -253,7 +255,11 @@ const jumpStyle = computed(() => {
   };
 });
 
-void preloadSoundEffect('/sounds/splash.mp3');
+const lilyPadStyle = {
+  backgroundImage: `url(${LILY_PAD_IMAGE})`
+};
+
+void preloadSoundEffect(SPLASH_SOUND);
 
 function setCellRef(element: Element | null, index: number) {
   cellRefs.value[index] = element as HTMLButtonElement | null;
@@ -336,7 +342,7 @@ function isAnimatingTarget(index: number) {
 }
 
 function playSplashSound() {
-  void playSoundEffect('/sounds/splash.mp3', {
+  void playSoundEffect(SPLASH_SOUND, {
     volume: 0.3
   }).catch(() => {
     // Ignora bloqueos del navegador si el audio aún no puede reproducirse.

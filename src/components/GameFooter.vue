@@ -21,7 +21,7 @@
           "
         >
           
-          <img src="/images/out.webp" alt="Salir" class="w-8 h-8"/>
+          <img :src="EXIT_IMAGE" alt="Salir" class="w-8 h-8"/>
         </button>
         
         <button
@@ -70,6 +70,7 @@ import {
   preloadSoundEffect,
   resumeSoundEffects
 } from '../composables/useSoundEffects';
+import { BUTTON_PRESS_SOUND, EXIT_IMAGE } from '../constants/assets';
 import { waitForAnimationFrameDelay } from '../utils/animationFrame';
 
 const props = defineProps<{
@@ -82,7 +83,7 @@ const emit = defineEmits<{
 
 const isExitPressed = ref(false);
 
-void preloadSoundEffect('/sounds/button-press.mp3');
+void preloadSoundEffect(BUTTON_PRESS_SOUND);
 
 async function handleExit() {
   if (isExitPressed.value) {
@@ -91,7 +92,7 @@ async function handleExit() {
 
   isExitPressed.value = true;
   await resumeSoundEffects();
-  void playSoundEffect('/sounds/button-press.mp3', { volume: 0.7 });
+  void playSoundEffect(BUTTON_PRESS_SOUND, { volume: 0.7 });
   await waitForAnimationFrameDelay(160);
   emit('exit');
 }

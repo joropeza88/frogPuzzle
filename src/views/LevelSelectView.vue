@@ -4,11 +4,11 @@
     <FireFly />
 
     <img
-      src="/images/game_bg.webp"
+      :src="GAME_BG_IMAGE"
       class="absolute top-0 left-0 h-[110%] w-[110%] object-cover z-10 pointer-events-none opacity-24 plants-back"
     />
     <img
-      src="/images/game_bg.webp"
+      :src="GAME_BG_IMAGE"
       class="absolute top-0 left-0 h-[110%] w-[110%] object-cover z-10 pointer-events-none opacity-92 plants-front"
     />
     <div class="pointer-events-none absolute inset-0 z-10 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.18),transparent_34%),linear-gradient(180deg,rgba(15,118,110,0.06),rgba(15,23,42,0.16))]"></div>
@@ -51,7 +51,7 @@
         "
         @click="handleExit"
       >
-        <img src="/images/out.webp" alt="Salir" class="w-8 h-8" />
+        <img :src="EXIT_IMAGE" alt="Salir" class="w-8 h-8" />
       </button>
     </footer>
   </main>
@@ -67,6 +67,7 @@ import {
   preloadSoundEffect,
   resumeSoundEffects
 } from '../composables/useSoundEffects';
+import { BUTTON_PRESS_SOUND, EXIT_IMAGE, GAME_BG_IMAGE } from '../constants/assets';
 import { waitForAnimationFrameDelay } from '../utils/animationFrame';
 
 const props = defineProps<{
@@ -82,7 +83,7 @@ const emit = defineEmits<{
 
 const isExitPressed = ref(false);
 
-void preloadSoundEffect('/sounds/button-press.mp3');
+void preloadSoundEffect(BUTTON_PRESS_SOUND);
 
 onMounted(() => {
   void playBackgroundMusic();
@@ -109,7 +110,7 @@ async function handleExit() {
 
   isExitPressed.value = true;
   await resumeSoundEffects();
-  void playSoundEffect('/sounds/button-press.mp3', { volume: 0.7 });
+  void playSoundEffect(BUTTON_PRESS_SOUND, { volume: 0.7 });
   await waitForAnimationFrameDelay(160);
   emit('exit');
 }

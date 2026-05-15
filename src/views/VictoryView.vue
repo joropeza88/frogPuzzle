@@ -94,6 +94,7 @@
 
 <script setup lang="ts">
 import { onMounted } from 'vue';
+import { APPLAUSE_SOUND } from '../constants/assets';
 import { stopBackgroundMusic } from '../composables/useBackgroundMusic';
 import { playSoundEffect, preloadSoundEffect } from '../composables/useSoundEffects';
 
@@ -140,8 +141,8 @@ async function shareGame() {
 
 onMounted(() => {
   stopBackgroundMusic();
-  void preloadSoundEffect('/sounds/applause.mp3');
-  void playSoundEffect('/sounds/applause.mp3', { volume: 0.72 });
+  void preloadSoundEffect(APPLAUSE_SOUND);
+  void playSoundEffect(APPLAUSE_SOUND, { volume: 0.72 });
 });
 </script>
 

@@ -1,6 +1,7 @@
 import { getSharedAudioContext } from './useSoundEffects';
+import { MUSIC_SOUND } from '../constants/assets';
 
-const MUSIC_SRC = '/sounds/music.mp3';
+const MUSIC_SRC = MUSIC_SOUND;
 const MUSIC_VOLUME = 0.3;
 
 let backgroundBufferPromise: Promise<AudioBuffer | null> | null = null;

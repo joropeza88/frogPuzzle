@@ -38,11 +38,13 @@ let nextBurstAt = 0;
 let nextBurstIndex = 0;
 
 function randomBurstStyle() {
+  const size = 8 + Math.random() * 4.5;
+
   return {
     left: `${18 + Math.random() * 64}%`,
     top: `${14 + Math.random() * 72}%`,
-    width: `${8 + Math.random() * 4.5}rem`,
-    height: `${8 + Math.random() * 4.5}rem`
+    width: `${size}rem`,
+    height: `${size}rem`
   };
 }
 

@@ -4,9 +4,8 @@
     :class="stateClasses"
   >
     <div
-      class="absolute inset-0 z-10 animate-[breathe_2.4s_ease-in-out_infinite]"
-      :class="baseColorFrog"
-      :style="orientationStyle"
+      class="absolute inset-0 z-10 animate-[breathe_2.4s_ease-in-out_infinite] bg-cover bg-center"
+      :style="[frogImageStyle, orientationStyle]"
     ></div>
     
   </div>
@@ -14,6 +13,12 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import {
+  BOTTOM_FROG_IMAGE,
+  BOTTOM_FROG_JUMP_IMAGE,
+  TOP_FROG_IMAGE,
+  TOP_FROG_JUMP_IMAGE
+} from '../constants/assets';
 import type { FrogColor } from '../utils/movementRules';
 
 const props = defineProps<{
@@ -24,15 +29,15 @@ const props = defineProps<{
   rotation?: number;
 }>();
 
-const baseColorFrog = computed(() =>
-  props.color === 'green'
+const frogImageStyle = computed(() => ({
+  backgroundImage: `url(${props.color === 'green'
     ? props.isJumping
-      ? "bg-[url('/images/top_frog_jump.webp')] bg-cover bg-center"
-      : "bg-[url('/images/top_frog.webp')] bg-cover bg-center"
+      ? TOP_FROG_JUMP_IMAGE
+      : TOP_FROG_IMAGE
     : props.isJumping
-      ? "bg-[url('/images/bottom_frog_jump.webp')] bg-cover bg-center"
-      : "bg-[url('/images/bottom_frog.webp')] bg-cover bg-center"
-);
+      ? BOTTOM_FROG_JUMP_IMAGE
+      : BOTTOM_FROG_IMAGE})`
+}));
 
 const stateClasses = computed(() => ({
   'scale-105': props.selected,

@@ -4,13 +4,13 @@
     <FireFly />
     <!-- Fondo plantas -->
     <img
-      src="/images/game_bg.webp"
+      :src="GAME_BG_IMAGE"
       class="absolute top-0 left-0 h-[110%] w-[110%] object-cover z-10 pointer-events-none opacity-24 plants-back"
     />
 
     <!-- Frente plantas -->
     <img
-      src="/images/game_bg.webp"
+      :src="GAME_BG_IMAGE"
       class="absolute top-0 left-0 h-[110%] w-[110%] object-cover z-10 pointer-events-none opacity-92 plants-front"
     />
     <div class="pointer-events-none absolute inset-0 z-10 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.18),transparent_34%),linear-gradient(180deg,rgba(15,118,110,0.06),rgba(15,23,42,0.16))]"></div>
@@ -67,6 +67,7 @@ import GameFooter from '../components/GameFooter.vue';
 import GameHeader from '../components/GameHeader.vue';
 import RandomWaveOverlay from '../components/RandomWaveOverlay.vue';
 import FireFly from '../components/FireFly.vue';
+import { GAME_BG_IMAGE, LINE_BG_IMAGE, LOSE_SOUND, VICTORY_SOUND } from '../constants/assets';
 import { playBackgroundMusic } from '../composables/useBackgroundMusic';
 import { playSoundEffect, preloadSoundEffect } from '../composables/useSoundEffects';
 import { useGameLogic, type LossReason } from '../composables/useGameLogic';
@@ -84,8 +85,8 @@ const emit = defineEmits<{
 
 onMounted(() => {
   void playBackgroundMusic();
-  void preloadSoundEffect('/sounds/lose.mp3');
-  void preloadSoundEffect('/sounds/victory.mp3');
+  void preloadSoundEffect(LOSE_SOUND);
+  void preloadSoundEffect(VICTORY_SOUND);
   void showLevelOneInstructions();
 });
 
@@ -139,9 +140,10 @@ async function showLevelOneInstructions() {
     title: 'Cómo jugar',
     text: 'Toca una rana y luego una hoja marcada para moverla. Debes intercambiar de lugar las ranas verdes y cafés antes de que se acabe el tiempo.',
     width: '300px',
+    background: `#f7f1dd url(${LINE_BG_IMAGE})`,
     buttonsStyling: false,
     customClass: {
-      popup: '!bg-[#f7f1dd] !bg-[url("/images/linebg.webp")] border-4 border-[#039088] shadow-[0_4px_0_#005f5a,0_14px_18px_rgba(0,0,0,0.18)]',
+      popup: 'border-4 border-[#039088] shadow-[0_4px_0_#005f5a,0_14px_18px_rgba(0,0,0,0.18)]',
       confirmButton: 'relative h-16 w-50 uppercase rounded-full font-black text-xl tracking-wide text-white border-4 border-[#039088] shadow-[0_4px_0_#005f5a,0_14px_18px_rgba(0,0,0,0.18)] active:translate-y-[4px] active:shadow-[0_2px_0_#005f5a,0_8px_12px_rgba(0,0,0,0.14)] transition-all duration-150 flex items-center justify-center bg-gradient-to-b from-emerald-400 to-[#039088]',
     },
     confirmButtonText: 'Entendido',
@@ -161,7 +163,7 @@ async function showWinDialog() {
     return;
   }
 
-  void playSoundEffect('/sounds/victory.mp3', {
+  void playSoundEffect(VICTORY_SOUND, {
     volume: 0.6
   });
 
@@ -171,9 +173,10 @@ async function showWinDialog() {
     //icon: 'success',
 
     width: '300px',
+    background: `#f7f1dd url(${LINE_BG_IMAGE})`,
     buttonsStyling: false,
     customClass: {
-      popup: '!bg-[#f7f1dd] !bg-[url("/images/linebg.webp")] border-4 border-[#039088] shadow-[0_4px_0_#005f5a,0_14px_18px_rgba(0,0,0,0.18)]',
+      popup: 'border-4 border-[#039088] shadow-[0_4px_0_#005f5a,0_14px_18px_rgba(0,0,0,0.18)]',
       confirmButton: 'relative h-16 w-50 uppercase rounded-full font-black text-xl tracking-wide text-white border-4 border-[#039088] shadow-[0_4px_0_#005f5a,0_14px_18px_rgba(0,0,0,0.18)] active:translate-y-[4px] active:shadow-[0_2px_0_#005f5a,0_8px_12px_rgba(0,0,0,0.14)] transition-all duration-150 flex items-center justify-center bg-gradient-to-b from-emerald-400 to-[#039088]',
       denyButton: 'bg-slate-800 hover:bg-slate-900 text-white font-semibold rounded-full px-4 py-2 mx-2'
     },
@@ -205,7 +208,7 @@ async function showLoseDialog(reason: LossReason | null) {
       ? 'Ese movimiento dejó el tablero sin jugadas posibles. Intenta otra estrategia.'
       : 'No alcanzaste a ordenar el pantano. Intenta de nuevo.';
 
-  void playSoundEffect('/sounds/lose.mp3', {
+  void playSoundEffect(LOSE_SOUND, {
     volume: 0.6
   });
 
@@ -215,9 +218,10 @@ async function showLoseDialog(reason: LossReason | null) {
     //icon: 'warning',
 
     width: '300px',
+    background: `#f7f1dd url(${LINE_BG_IMAGE})`,
     buttonsStyling: false,
     customClass: {
-      popup: '!bg-[#f7f1dd] !bg-[url("/images/linebg.webp")] border-4 border-[#039088] shadow-[0_4px_0_#005f5a,0_14px_18px_rgba(0,0,0,0.18)]',
+      popup: 'border-4 border-[#039088] shadow-[0_4px_0_#005f5a,0_14px_18px_rgba(0,0,0,0.18)]',
       confirmButton: 'relative h-16 w-50 uppercase rounded-full font-black text-xl tracking-wide text-white border-4 border-[#039088] shadow-[0_4px_0_#005f5a,0_14px_18px_rgba(0,0,0,0.18)] active:translate-y-[4px] active:shadow-[0_2px_0_#005f5a,0_8px_12px_rgba(0,0,0,0.14)] transition-all duration-150 flex items-center justify-center bg-gradient-to-b from-emerald-400 to-[#039088]',
       denyButton: 'bg-slate-800 hover:bg-slate-900 text-white font-semibold rounded-full px-4 py-2 mx-2'
     },

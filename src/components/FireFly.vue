@@ -1,5 +1,5 @@
 <template>
-  <div class="pointer-events-none fixed inset-0 overflow-hidden z-40">
+  <div class="pointer-events-none absolute inset-0 overflow-hidden z-40">
     <span
       v-for="bug in bugs"
       :key="bug.id"

@@ -1,4 +1,5 @@
 import { computed, ref } from 'vue';
+import { CLOCK_SOUND, JUMP_SOUND } from '../constants/assets';
 import { useLevels } from './useLevels';
 import { playSoundEffect, preloadSoundEffect } from './useSoundEffects';
 import { useTimer } from './useTimer';
@@ -38,7 +39,7 @@ export function useGameLogic(initialLevel = 1) {
 
   const levelConfig = computed(() => levels.generateLevel(currentLevel.value));
   function playClockWarningSound() {
-    void playSoundEffect('/sounds/clock.mp3', {
+    void playSoundEffect(CLOCK_SOUND, {
       volume: 0.65
     }).catch(() => {
       // Ignora bloqueos del navegador si el audio aún no puede reproducirse.
@@ -61,8 +62,8 @@ export function useGameLogic(initialLevel = 1) {
     }
   });
 
-  void preloadSoundEffect('/sounds/jump.mp3');
-  void preloadSoundEffect('/sounds/clock.mp3');
+  void preloadSoundEffect(JUMP_SOUND);
+  void preloadSoundEffect(CLOCK_SOUND);
 
   function clearError() {
     if (errorTimeout !== null) {
@@ -92,7 +93,7 @@ export function useGameLogic(initialLevel = 1) {
   }
 
   function playJumpSound() {
-    void playSoundEffect('/sounds/jump.mp3', {
+    void playSoundEffect(JUMP_SOUND, {
       volume: 0.8
     }).catch(() => {
       // Ignora bloqueos del navegador si el audio aún no puede reproducirse.
